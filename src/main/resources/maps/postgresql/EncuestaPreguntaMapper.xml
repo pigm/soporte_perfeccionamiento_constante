@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EncuestaPreguntaMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaPregunta">
+		<id column="id_encuesta_pregunta" property="idEncuestaPregunta" />
+		<result column="id_encuesta" property="idEncuesta" />
+		<result column="pregunta" property="pregunta" />
+		<result column="estado" property="estado" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+	</resultMap>
+
+	<sql id="query">
+		select 
+			_ep.id_encuesta_pregunta, 
+			_ep.id_encuesta, 
+			_ep.pregunta, 
+			_ep.estado, 
+			_ep.id_usuario_registro, 
+			_ep.fecha_registro
+		from came.came_encuesta_pregunta _ep
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+			came.came_encuesta_pregunta
+		where id_encuesta_pregunta = #{idEncuestaPregunta}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaPregunta">
+		<selectKey keyColumn="id_encuesta_pregunta"
+			keyProperty="idEncuestaPregunta" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_encuesta_pregunta
+		(
+			id_encuesta_pregunta, 
+			id_encuesta, 
+			pregunta, 
+			estado, 
+			id_usuario_registro, 
+			fecha_registro
+		)
+		values
+		(
+			#{idEncuestaPregunta},
+			#{idEncuesta}, 
+			#{pregunta}, 
+			#{estado}, 
+			#{idUsuarioRegistro}, 
+			#{fechaRegistro}
+		)
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaPregunta">
+		update came.came_encuesta_pregunta
+		set id_encuesta=#{idEncuesta}, 
+			pregunta=#{pregunta}, 
+			estado=#{estado}, 
+			id_usuario_registro=#{idUsuarioRegistro}, 
+			fecha_registro=#{fechaRegistro}
+		where
+			id_encuesta_pregunta = #{idEncuestaPregunta}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ep.id_encuesta_pregunta = #{idEncuestaPregunta}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _ep.id_encuesta_pregunta asc
+	</select>	
+
+	<select id="getByIdEncuesta" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ep.id_encuesta = #{idEncuesta}
+		order by _ep.id_encuesta_pregunta asc
+	</select>	
+
+</mapper>

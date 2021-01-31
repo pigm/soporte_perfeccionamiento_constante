@@ -1,0 +1,365 @@
+label {
+    font-size: 14px;
+}
+
+table {
+    font-size: 14px;
+}
+
+::placeholder {
+    font-size: 14px !important
+}
+
+.inicio {
+    height: 550px;
+    background-image: url(../images/inicio.png);
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+}
+
+
+.fondo-head {
+    background-image: url(../images/Logo-SistemaNacionalSupervision.png);
+    background-size: 10%;
+    background-repeat: no-repeat;
+    background-position: center right 280px;
+    padding-bottom: 50px;
+}
+
+
+/* .fondo-head-cel{
+    padding-bottom: 50px;
+} */
+
+.text-colegios {
+    color: #007bff;
+}
+
+.text-nor {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+h1.title-application {
+    margin-bottom: 0px;
+}
+
+nav {
+    border-radius: 15px;
+    background-color: #f5f5f5;
+}
+
+nav.navbar {
+    padding-bottom: 0px !important;
+}
+
+.navbar-nav .active {
+    border-bottom: 4px solid;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.navbar-nav .active a {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+#menuCel .navbar-nav .active {
+    border-bottom: 0px;
+    border-left: 4px solid;
+    background-color: #FFF;
+}
+
+#menuCel .dropdown-item {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.breadcrumb {
+    margin-bottom: 10px !important;
+}
+
+.border {
+    border-radius: 15px;
+    border-color: #EFEFEF !important;
+}
+
+ul.menu {
+    margin-top: 25px !important;
+    margin-bottom: 25px;
+}
+
+ul.menu li {
+    margin-bottom: 15px;
+}
+
+.menu {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.menu li a {
+    color: #707070;
+    padding-left: 20px;
+}
+
+
+.menu li a:hover {
+    color: #006bb7;
+}
+
+.menu li.active {
+    border-left: 4px solid;
+    font-weight: bold;
+}
+
+.menu li.active a {
+    margin-left: -4px;
+}
+
+.menu-secondario {
+    max-height: 310px;
+}
+
+/* TABLA MINEDUC */
+table.mine thead {
+    color: #ffffff;
+    background-color: #2e75c5;
+}
+
+table.mine > tbody > tr > th {
+    padding: 5px 0px 5px 5px;
+    background: #bee3ee;
+}
+
+/* TABLA PERFIL */
+/*
+#TablaPerfil thead tr th { 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #2e75c5;
+    border: 0px;
+}
+
+#TablaPerfil.table-responsive { 
+    height: 450px;
+    overflow: scroll;
+}
+*/
+
+.footer-switch {
+    position: absolute;
+    left: 15px;
+}
+
+
+/*DROP AND DRAG*/
+.files input {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 38px 0px 85px 4%;
+    margin: 0;
+    width: 100% !important;
+}
+
+.files input:focus {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    border: 1px solid #92b0b3;
+}
+
+.files {
+    position: relative
+}
+
+/*
+.files:after {
+    pointer-events: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 50px;
+    right: 0;
+    height: 50px;
+    content: "";
+    background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+*/
+
+.files:before {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    right: 0;
+    height: 40px;
+    content: " Arrastra el archivo aquí para subirlo. ";
+    display: block;
+    margin: 0 auto;
+    font-weight: 400;
+    text-align: center;
+
+}
+
+
+/*FILES DOCUMENTOS */
+.files1 input {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    padding: 38px 0px 85px 4%;
+    margin: 0;
+    width: 100% !important;
+}
+
+.files1 input:focus {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    border: 1px solid #92b0b3;
+}
+
+.files1 {
+    position: relative
+}
+
+/*
+.files:after {
+    pointer-events: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 50px;
+    right: 0;
+    height: 50px;
+    content: "";
+    background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
+    display: block;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+*/
+
+.files1:before {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    right: 0;
+    height: 40px;
+    content: " Arrastra el archivo aquí para subirlo. ";
+    display: block;
+    margin: 0 auto;
+    font-weight: 400;
+    text-align: center;
+
+}
+
+/*Inputs avisos*/
+
+.aviso {
+    border-color: #f0ad4e !important;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: url("../images/warnin.svg");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.aviso-label {
+    font-size: 12.8px;
+    color: #f0ad4e !important;
+}
+
+label.text-muted {
+    font-size: 12.8px;
+}
+
+.bg-agregar {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+
+.btn-link {
+    font-size: 14px;
+}
+
+.btn-duallistbox{
+    border-color: 1px solid #A0A5AA;
+    background-color: #ced4da;
+    color: white;
+    margin-top: 5px;
+}
+
+bg-foco{
+   border-radius: 10px !important;
+    border-color: #A0A5AA !important;
+}
+
+.fon-14 {
+    font-size: 14px;
+}
+
+
+/*TABLA SUPLENCIAS*/
+.bg-suplencia {
+    background-color: #0757B1 !important;
+}
+
+#tabla-suplencia.table thead th {
+    border-bottom: 0px !important;
+    border-top: 0px;
+}
+
+
+
+.select2-selection {
+    width: 100% !important;
+}
+
+.loader {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Asesoría directa*/
+.asesoria-lista{
+    padding: 10px;
+    height: 200px;
+    overflow-y: scroll;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.estable-redes {
+     overflow: scroll;
+     height: 200px;
+}
+
+
+/*Planificar*/
+.sinplan{
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    padding: 25px;
+}
+
+
+.text-rea{
+    color: #AAABAC;
+}
+
+/*Media query*/
+

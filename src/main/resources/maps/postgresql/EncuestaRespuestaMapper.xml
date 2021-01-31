@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EncuestaRespuestaMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaRespuesta">
+		<id column="id_encuesta_respuesta" property="idEncuestaRespuesta" />
+		<result column="id_encuesta_pregunta" property="idEncuestaPregunta" />
+		<result column="id_usuario" property="idUsuario" />
+		<result column="id_perfil" property="idPerfil" />
+		<result column="valor" property="valor" />
+		<result column="fecha_respuesta" property="fechaRespuesta" />
+	</resultMap>
+
+	<sql id="query">
+		select
+		    _er.id_encuesta_respuesta, 
+		    _er.id_encuesta_pregunta, 
+			_er.id_usuario, 
+		    _er.id_perfil, 
+			_er.valor, 
+			_er.fecha_respuesta
+		from came.came_encuesta_respuesta _er
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+			came.came_encuesta_respuesta
+		where id_encuesta_respuesta =	#{idEncuestaRespuesta}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaRespuesta">
+		<selectKey keyColumn="id_encuesta_respuesta"
+			keyProperty="idEncuestaRespuesta" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_encuesta_respuesta
+		(
+			id_encuesta_respuesta, 
+			id_encuesta_pregunta, 
+			id_usuario, 
+			id_perfil,
+			valor, 
+			fecha_respuesta
+		)
+		values
+		(
+			#{idEncuestaRespuesta},			 
+			#{idEncuestaPregunta}, 
+			#{idUsuario}, 
+			#{idPerfil},
+			#{valor}, 
+			#{fechaRespuesta}
+		)
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaRespuesta">
+		update came.came_encuesta_respuesta
+		set id_encuesta_pregunta=#{idEncuestaPregunta}, 
+			id_usuario=#{idUsuario}, 
+			id_perfil=#{idPerfil}, 
+			valor=#{valor}, 
+			fecha_respuesta=#{fechaRespuesta}
+		where
+		id_encuesta_respuesta =	#{idEncuestaRespuesta}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _er.id_encuesta_respuesta = #{idEncuestaRespuesta}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _er.id_encuesta_respuesta asc
+	</select>	
+
+	<select id="getByIdPregunta" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _er.id_encuesta_pregunta = #{idEncuestaPregunta}
+	</select>
+	
+</mapper>

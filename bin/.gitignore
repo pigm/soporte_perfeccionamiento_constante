@@ -1,0 +1,9 @@
+target/
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+test-output/
+src/main/resources/application.properties
+.vscode/

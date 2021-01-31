@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.RedSupervisorMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSupervisor">
+		<id column="id_red_supervisor" property="idRedSupervisor" />
+		<result column="id_red" property="idRed" />
+		<result column="id_supervisor" property="idSupervisor" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="id_asignacion_supervisor" property="idAsignacionSupervisor" />		
+	</resultMap>
+	
+	<sql id="query">
+		SELECT 
+			_rs.id_red_supervisor, 
+			_rs.id_red, 
+			_rs.id_supervisor, 
+			_rs.start_date, 
+			_rs.end_date,
+			_rs.id_asignacion_supervisor
+		FROM
+			came.came_red_supervisor _rs
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_red_supervisor
+		where id_red_supervisor = #{idRedSupervisor}
+	</delete>
+
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSupervisor">
+		<selectKey keyColumn="id_red_supervisor" keyProperty="idRedSupervisor" order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_red_supervisor 
+			(
+				id_red_supervisor, 
+				id_red, 
+				id_supervisor, 
+				start_date, 
+				end_date,
+				id_asignacion_supervisor
+			)
+		values (
+			#{idRedSupervisor}, 
+			#{idRed}, 
+			#{idSupervisor}, 
+			#{startDate}, 
+			#{endDate},
+			#{idAsignacionSupervisor}
+			)
+	</insert>
+	
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSupervisor">
+		update came.came_red_supervisor
+			set id_red=#{idRed}, 
+				id_supervisor=#{idSupervisor},
+				start_date=#{startDate}, 
+				end_date=#{endDate},
+				id_asignacion_supervisor = #{idAsignacionSupervisor}
+		where id_red_supervisor = #{idRedSupervisor}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _rs.id_red_supervisor = #{idRedSupervisor}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _rs.id_red_supervisor desc
+	</select>
+		
+	<select id="getByIdRed" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _rs.id_red = #{idRed}
+		order by _rs.id_red_supervisor desc
+	</select>
+</mapper>

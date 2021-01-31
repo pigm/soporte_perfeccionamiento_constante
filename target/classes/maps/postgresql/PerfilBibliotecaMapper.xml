@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.PerfilBibliotecaMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.PerfilBiblioteca">
+		<id column="id_perfil_biblioteca" jdbcType="BIGINT"	property="idPerfilBiblioteca" />
+		<result column="id_biblioteca" jdbcType="BIGINT" property="idBiblioteca" />
+		<result column="id_perfil" jdbcType="BIGINT" property="idPerfil" />
+		<result column="id_periodo" jdbcType="BIGINT" property="idPeriodo" />		
+		<result column="id_region" property="idRegion" />
+		<result column="id_deprov" property="idDeprov" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+	</resultMap>
+	
+	<sql id="id_perfilbiblioteca">
+		SELECT 
+			_dp.id_perfil_biblioteca,
+			_dp.id_biblioteca,
+			_dp.id_perfil,
+			_dp.id_periodo,
+			_dp.id_region,
+			_dp.id_deprov,
+			_dp.id_usuario_registro,
+			_dp.fecha_registro
+		FROM
+			came.came_perfil_biblioteca _dp
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_perfil_biblioteca
+		where id_perfil_biblioteca = #{idPerfilBiblioteca,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PerfilBiblioteca">
+		<selectKey keyColumn="id_perfil_biblioteca" keyProperty="idPerfilBiblioteca"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_perfil_biblioteca
+		(
+			id_perfil_biblioteca, 
+			id_biblioteca,
+			id_perfil,
+			id_periodo,
+			id_region,
+			id_deprov,
+			id_usuario_registro,
+			fecha_registro
+		)
+		values (#{idPerfilBiblioteca,jdbcType=BIGINT},
+				#{idBiblioteca},
+				#{idPerfil},
+				#{idPeriodo},
+				#{idRegion},
+				#{idDeprov},
+				#{idUsuarioRegistro},
+				now())
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PerfilBiblioteca">
+		update came.came_perfil_biblioteca
+		set id_deprov =	#{idDeprov,jdbcType=BIGINT},
+			id_periodo = #{idPeriodo,jdbcType=BIGINT},
+			id_region = #{idRegion},
+			id_usuario_registro = #{idUsuarioRegistro}
+		where id_perfil_biblioteca =	#{idPerfilBiblioteca,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="id_perfilbiblioteca"/>
+		where _dp.id_perfil_biblioteca = #{idPerfilBiblioteca,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="id_perfilbiblioteca"/>
+		where _dp.id_periodo = #{idPeriodo,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="id_perfilbiblioteca"/>
+		order by _dp.id_perfil_biblioteca desc
+	</select>
+	
+
+</mapper>

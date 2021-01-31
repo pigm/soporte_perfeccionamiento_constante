@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.AsesoriaMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Asesoria">
+		<id column="id_asesoria" property="idAsesoria" />
+		<result column="id_periodo"	property="idPeriodo" />
+		<result column="id_red"	property="idRed" />
+		<result column="id_asesoria_directa" property="idAsesoriaDirecta" />
+		<result column="id_asignacion_tipo"	property="idAsignacionTipo" />
+		<result column="start_date"	property="startDate" />
+		<result column="end_date"	property="endDate" />
+		<result column="usuario_registro"	property="usuarioRegistro" />
+		<result column="fecha_registro"	property="fechaRegistro" />		
+	</resultMap>
+	
+	<sql id="query">
+		select _a.id_asesoria, 
+			   _a.id_periodo, 
+			   _a.id_red, 
+			   _a.id_asesoria_directa, 
+			   _a.id_asignacion_tipo, 
+			   _a.start_date, 
+			   _a.end_date, 
+			   _a.usuario_registro, 
+			   _a.fecha_registro
+		from came.came_asesoria _a
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_asesoria
+		where id_asesoria = #{id_asesoria}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Asesoria">
+		<selectKey keyColumn="id_asesoria"
+			keyProperty="idAsesoria" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_asesoria (
+			id_asesoria, 
+			id_periodo, 
+			id_red, 
+			id_asesoria_directa, 
+			id_asignacion_tipo, 
+			start_date, end_date, 
+			usuario_registro, 
+			fecha_registro
+			)
+		values (
+				#{idAsesoria}, 
+				#{idPeriodo}, 
+				#{idRed}, 
+				#{idAsesoriaDirecta}, 
+				#{idAsignacionTipo}, 
+				#{startDate}, 
+				#{endDate}, 
+				#{usuarioRegistro}, 
+				#{fechaRegistro}
+			)
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Asesoria">
+		update came.came_asesoria
+		SET id_asesoria=#{idAsesoria}, 
+			id_periodo=#{idPeriodo}, 
+			id_red=#{idRed}, 
+			id_asesoria_directa=#{idAsesoriaDirecta}, 
+			id_asignacion_tipo=#{idAsignacionTipo}, 
+			start_date=#{startDate}, 
+			end_date=#{endDate}, 
+			usuario_registro=#{usuarioRegistro}, 
+			fecha_registro=#{fechaRegistro}
+		where id_asesoria = #{idAsesoria}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _a.id_asesoria = #{idAsesoria}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _a.id_asesoria asc
+	</select>
+
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _a.id_periodo = #{idPeriodo}
+	</select>
+</mapper>

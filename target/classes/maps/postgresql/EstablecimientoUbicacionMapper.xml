@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EstablecimientoUbicacionMapper">
+	<resultMap id="BaseResultMap"	type="cl.mineduc.came.apoyo_mejora_continua.modelo.EstablecimientoUbicacion">
+		<id column="rbd" property="rbd" />		
+		<result column="latitud" property="latitud" />
+		<result column="longitud" property="longitud" />		
+	</resultMap>
+	
+	<sql id="query">
+		SELECT _eu.rbd, 
+			   _eu.latitud, 
+			   _eu.longitud
+		FROM came.came_establecimiento_ubicacion _eu
+	</sql>
+		
+	<select id="getByRbd" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _eu.rbd = #{rbd}
+		order by _eu.rbd asc
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _eu.rbd asc
+	</select>	
+</mapper>

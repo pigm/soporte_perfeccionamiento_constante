@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.SesionMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Sesion">
+		<id column="id_sesion" property="idSesion" />
+		<result column="id_asesoria" property="idAsesoria" />
+		<result column="id_session_estado" property="idSessionEstado" />
+		<result column="fecha_planificacion" property="fechaPlanificacion" />
+		<result column="fecha_realizada" property="fechaRealizada" />
+		<result column="usuario_registro" property="usuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="id_sesion_tipo" property="idSesionTipo" />
+
+		
+	</resultMap>
+
+	<sql id="query">
+		select _s.id_sesion, 
+			   _s.id_asesoria, 
+			   _s.id_session_estado, 
+			   _s.fecha_planificacion, 
+			   _s.fecha_realizada, 
+			   _s.usuario_registro, 
+			   _s.fecha_registro,
+			   _s.id_sesion_tipo
+		from came.came_sesion _s
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_sesion
+		where id_sesion = #{id_sesion}
+	</delete>
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Sesion">
+		<selectKey keyColumn="id_sesion"
+			keyProperty="idSesion" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_sesion (
+			id_sesion, 
+			id_asesoria, 
+			id_session_estado, 
+			fecha_planificacion, 
+			fecha_realizada, 
+			usuario_registro, 
+			fecha_registro,
+			id_sesion_tipo
+		)
+		values (
+			#{idSesion}, 
+			#{idAsesoria},
+			#{idSessionEstado}, 
+			#{fechaPlanificacion}, 
+			#{fechaRealizada}, 
+			#{usuarioRegistro}, 
+			#{fechaRegistro},
+			#{idSesionTipo}
+		)
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Sesion">
+		update came.came_sesion
+		set id_asesoria = #{idAsesoria},
+			id_session_estado = #{idSessionEstado}, 
+			fecha_planificacion = #{fechaPlanificacion}, 
+			fecha_realizada = #{fechaRealizada}, 
+			usuario_registro = #{usuarioRegistro}, 
+			fecha_registro = #{fechaRegistro},
+			id_sesion_tipo = #{idSesionTipo}
+		where id_sesion = #{idSesion}	
+	</update>
+	<select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _s.id_sesion = #{idSesion}
+	</select>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _s.id_sesion asc
+	</select>
+	<select id="getByIdAsesoria" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _s.id_asesoria = #{idAsesoria}
+		order by _s.id_sesion asc
+	</select>
+</mapper>

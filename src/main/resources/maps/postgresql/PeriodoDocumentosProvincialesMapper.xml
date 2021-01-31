@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoDocumentosProvincialesMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoDocumentosProvinciales">
+		<id column="id_periodo_documentos_provinciales" jdbcType="BIGINT"	property="idPeriodoDocumentosProvinciales" />
+		<result column="id_region" jdbcType="BIGINT" property="idRegion" />
+		<result column="id_deprov" jdbcType="BIGINT" property="idDeprov" />
+		<result column="id_periodo" jdbcType="BIGINT" property="idPeriodo" />		
+		<result column="visible" property="visible" />
+		<result column="es_caso_especial" property="esCasoEspecial" />
+		<result column="template_path" property="templatePath" />		
+		<result column="fecha_inicio" property="fechaInicio" />
+		<result column="fecha_fin" property="fechaFin" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="descripcion" property="descripcion" />
+	</resultMap>
+	
+	<sql id="documento_provincial">
+		SELECT 
+			_dp.id_periodo_documentos_provinciales,
+			_dp.id_periodo,
+			_dp.id_deprov,
+			_dp.id_region,
+			_dp.visible,
+			_dp.es_caso_especial,
+			_dp.template_path,
+			_dp.fecha_registro,
+			_dp.fecha_inicio,
+			_dp.fecha_fin,
+			_dp.id_usuario_registro,
+			_dp.descripcion
+		FROM
+			came.came_periodo_documentos_provinciales _dp
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.periodo_documentos_provinciales
+		where id_periodo_documentos_provinciales =	#id_{periodo_documentos_provinciales,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoDocumentosProvinciales">
+		<selectKey keyColumn="id_periodo_documentos_provinciales" keyProperty="idPeriodoDocumentosProvinciales"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_periodo_documentos_provinciales
+		(
+			id_periodo_documentos_provinciales, 
+			id_periodo,
+			id_deprov,			
+			id_region,
+			visible,
+			es_caso_especial,
+			template_path,
+			fecha_registro,
+			fecha_inicio,
+			fecha_fin,
+			id_usuario_registro,
+			descripcion
+		)
+		values (#{idPeriodoDocumentosProvinciales,jdbcType=BIGINT},
+				#{idPeriodo},
+				#{idDeprov},
+				#{idRegion},
+				#{visible},
+				#{esCasoEspecial},
+				#{templatePath},
+				now(),
+				#{fechaInicio},
+				#{fechaFin},
+				#{idUsuarioRegistro},
+				#{descripcion})
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoDocumentosProvinciales">
+		update came.came_periodo_documentos_provinciales
+		set id_deprov =	#{idDeprov,jdbcType=BIGINT},
+			id_periodo = #{idPeriodo,jdbcType=BIGINT},
+			id_region = #{idRegion},
+			visible = #{visible},
+			es_caso_especial = #{esCasoEspecial},
+			template_path = #{templatePath},
+			fecha_inicio = #{fechaInicio},
+			fecha_fin = #{fechaFin},
+			id_usuario_registro = #{idUsuarioRegistro},
+			descripcion = #{descripcion}
+		where periodo_documentos_provinciales =	#{idPeriodoDocumentosProvinciales,jdbcType=BIGINT}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="documento_provincial"/>
+		where _dp.id_periodo_documentos_provinciales = #{idPeriodoDocumentosProvinciales,jdbcType=BIGINT}
+	</select>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="documento_provincial"/>
+		order by _dp.id_periodo_documentos_provinciales desc
+	</select>
+	
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="documento_provincial"/>
+		where _dp.id_periodo =
+		#{idPeriodo,jdbcType=BIGINT}
+	</select>
+</mapper>

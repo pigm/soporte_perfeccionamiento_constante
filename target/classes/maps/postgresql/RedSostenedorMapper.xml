@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.RedSostenedorMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSostenedor">
+		<id column="id_red_sostenedor" property="idRedSostenedor" />
+		<result column="id_red" property="idRed" />
+		<result column="rut" property="rut" />
+		<result column="dv" property="dv" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="status" property="status" />		
+	</resultMap>
+
+	<sql id="query">
+		SELECT 
+			_rs.id_red_sostenedor, 
+			_rs.id_red, 
+			_rs.rut, 
+			_rs.dv, 
+			_rs.id_usuario_registro, 
+			_rs.fecha_registro,
+			_rs.status
+		FROM
+			came.came_red_sostenedor _rs
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.red_sostenedor
+		where id_red_sostenedor = #{id_red_sostenedor}
+	</delete>
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSostenedor">
+		<selectKey keyColumn="id_red_sostenedor" keyProperty="idRedSostenedor"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_red_sostenedor 
+			(
+				id_red_sostenedor, 
+				id_red, 
+				rut, 
+				dv, 
+				id_usuario_registro, 
+				fecha_registro,
+				status)
+		values 
+		(
+			#{idRedSostenedor}, 
+			#{idRed},
+			#{rut},
+			#{dv},
+			#{idUsuarioRegistro},
+			#{fechaRegistro},
+			#{status}
+		)
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSostenedor">
+		update came.came_red_sostenedor
+			set id_red = #{idRed},
+				rut = #{rut},
+				dv = #{dv},
+				id_usuario_registro = #{idUsuarioRegistro},
+				fecha_registro = #{fechaRegistro},
+				status = #{status}				
+		where id_red_sostenedor = #{idRedSostenedor}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"	resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where id_red_sostenedor = #{idRedSostenedor}
+	</select>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _rs.id_red_sostenedor asc
+	</select>
+
+	<select id="getByIdRed" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _rs.id_red = #{idRed}
+		order by _rs.id_red_sostenedor asc
+	</select>
+</mapper>

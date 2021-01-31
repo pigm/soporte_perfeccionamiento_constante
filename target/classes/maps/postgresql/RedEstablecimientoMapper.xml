@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.RedEstablecimientoMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.RedEstablecimiento">
+		<id column="id_red_establecimiento" property="idRedEstablecimiento" />
+		<result column="id_red" property="idRed" />
+		<result column="rbd" property="rbd" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<sql id="query">
+		SELECT 
+			_re.id_red_establecimiento, 
+			_re.id_red, 
+			_re.rbd, 
+			_re.id_usuario_registro, 
+			_re.fecha_registro,
+			_re.status
+		FROM
+			came.came_red_establecimiento _re
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_red_establecimiento
+		where id_red_establecimiento = #{idRedEstablecimiento}
+	</delete>
+
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedEstablecimiento">
+		<selectKey keyColumn="id_red_establecimiento" keyProperty="idRedEstablecimiento" order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_red_establecimiento 
+			(
+				id_red_establecimiento, 
+				id_red, 
+				rbd, 
+				id_usuario_registro, 
+				fecha_registro,
+				status
+			)
+		values (
+			#{idRedEstablecimiento}, 
+			#{idRed}, 
+			#{rbd}, 
+			#{idUsuarioRegistro}, 
+			#{fechaRegistro},
+			#{status}
+			)
+	</insert>
+	
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedEstablecimiento">
+		update came.came_red_establecimiento
+			set id_red=#{idRed}, 
+				rbd=#{rbd},
+				id_usuario_registro=#{idUsuarioRegistro}, 
+				fecha_registro=#{fechaRegistro},
+				status = #{status}
+		where id_red_establecimiento = #{idRedEstablecimiento}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _re.id_red_establecimiento = #{idRedEstablecimiento}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _re.id_red_establecimiento desc
+	</select>
+		
+	<select id="getByIdRed" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _re.id_red = #{idRed}
+		order by _re.id_red_establecimiento desc
+	</select>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.Periodo">
+		<id column="id_periodo" jdbcType="BIGINT" property="idPeriodo" />
+		<result column="anio" property="anio" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+
+		<collection property="documentosProvinciales"
+			column="id_periodo" notNullColumn="id_periodo"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoDocumentosProvincialesMapper.getByIdPeriodo"
+			foreignColumn="id_periodo"></collection>
+
+		<collection property="documentosRegionales"
+			column="id_periodo" notNullColumn="id_periodo"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoDocumentosRegionalesMapper.getByIdPeriodo"
+			foreignColumn="id_periodo"></collection>
+
+		<collection property="conformacionRedes" column="id_periodo"
+			notNullColumn="id_periodo"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoConformacionRedesMapper.getByIdPeriodo"
+			foreignColumn="id_periodo"></collection>
+		
+		<collection property="implementacionesApoyo"
+			column="id_periodo" notNullColumn="id_periodo"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoPlanificacionImplementacionApoyoMapper.getByIdPeriodo"
+			foreignColumn="id_periodo"></collection>
+
+		<collection property="asignaciones"
+			column="id_periodo" notNullColumn="id_periodo" 
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoAsignacionSupervisorMapper.getByIdPeriodo"
+			foreignColumn="id_periodo"></collection>
+
+	</resultMap>
+
+	<sql id="periodo">
+		SELECT
+		_p.id_periodo,
+		_p.anio,
+		_p.id_usuario_registro,
+		_p.fecha_registro
+		FROM
+		came.came_periodo _p
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+		came.came_periodo
+		where id_periodo = #{idPeriodo,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Periodo">
+		<selectKey keyColumn="id_periodo" keyProperty="idPeriodo"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_periodo (id_periodo, anio, id_usuario_registro, fecha_registro)
+		values
+		(#{idPeriodo,jdbcType=BIGINT},
+		#{anio},
+		#{idUsuarioRegistro},
+		now())
+	</insert>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="periodo"></include>
+		order by _p.id_periodo desc
+	</select>
+
+	<select id="getPeriodoById" resultMap="BaseResultMap">
+		<include refid="periodo"></include>
+		where
+		_p.id_periodo = #{idPeriodo}
+	</select>
+	
+	<select id="getPeriodoByYear" resultMap="BaseResultMap">
+		<include refid="periodo"></include>
+		where
+		_p.anio = #{anio}
+	</select>
+	
+	
+<!-- 	<update id="updateById" -->
+<!-- 		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Periodo"> -->
+<!-- 		update came.came_periodo -->
+<!-- 		where id_periodo = -->
+<!-- 		#{idPeriodo,jdbcType=BIGINT} -->
+<!-- 	</update> -->
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.MensajePerfilMapper">
+  <resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.MensajePerfil">
+    <id column="id_perfil_mensaje" property="idPerfilMensaje" />
+    <result column="id_perfil" property="idPerfil" />
+	<result column="id_mensaje" property="idMensaje" />
+    <result column="id_periodo" property="idPeriodo" />
+    <result column="id_region" property="idRegion" />
+    <result column="id_deprov" property="idDeprov" />
+    <result column="leido" property="leido" />
+    <result column="id_usuario_registro" property="idUsuarioRegistro" />
+    <result column="fecha_registro" property="fechaRegistro" />
+
+	<association property="mensaje"
+			column="id_mensaje"
+			notNullColumn="id_mensaje"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.MensajeMapper.getById"
+			foreignColumn="id_mensaje">
+	</association>
+
+	<association property="perfil"
+			column="id_perfil"
+			notNullColumn="id_perfil"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.PerfilMapper.getById"
+			foreignColumn="id_perfil">
+	</association>
+  </resultMap>
+  
+   <sql id="query">
+		 select _pm.id_perfil_mensaje, 
+		 		_pm.id_perfil, 
+		 		_pm.id_mensaje, 
+		 		_pm.id_periodo, 
+		 		_pm.id_region, 
+		 		_pm.id_deprov, 
+		 		_pm.leido, 
+		    	_pm.id_usuario_registro,
+				_pm.fecha_registro
+		    from came.came_perfil_mensaje _pm
+   </sql>	
+  
+
+  
+  <insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.MensajePerfil">
+  <selectKey keyColumn="id_perfil_mensaje" keyProperty="idPerfilMensaje"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+    insert into came.came_perfil_mensaje (
+    			id_perfil_mensaje,
+    			id_perfil, 
+    			id_mensaje, 
+      			id_periodo, 
+      			id_region, 
+      			id_deprov, 
+      			leido, 
+      			id_usuario_registro,
+				fecha_registro  
+      			)
+    values (#{idPerfilMensaje,jdbcType=BIGINT}, 
+    		#{idPerfil,jdbcType=BIGINT}, 
+			#{idMensaje,jdbcType=BIGINT}, 
+    		#{idPeriodo,jdbcType=BIGINT}, 
+      		#{idRegion,jdbcType=BIGINT}, 
+      		#{idDeprov,jdbcType=BIGINT},  
+      		#{leido,jdbcType=BIT},
+			#{idUsuarioRegistro,jdbcType=BIGINT},
+      		#{fechaRegistro,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <update id="updateById" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.MensajePerfil">
+    update came.came.came_perfil_mensaje
+    	set leido = #{leido,jdbcType=BIT},
+            id_usuario_registro = #{idUsuarioRegistro,jdbcType=BIGINT},
+      		fecha_registro = #{fechaRegistro,jdbcType=TIMESTAMP}
+    where id_perfil_mensaje = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+   	<include refid="query"></include>
+    where _pm.id_perfil_mensaje = #{idPerfilMensaje}
+  </select>
+  
+  <select id="getAll" resultMap="BaseResultMap">
+    <include refid="query"></include>
+		 order by _pm.id_perfil_mensaje asc
+  </select>
+
+  <select id="getByIdPeriodo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+   	<include refid="query"></include>
+    where _pm.id_periodo = #{idPeriodo}
+  </select>
+
+</mapper>

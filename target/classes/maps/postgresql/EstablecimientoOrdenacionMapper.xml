@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EstablecimientoOrdenacionMapper">
+	<resultMap id="BaseResultMap"	type="cl.mineduc.came.apoyo_mejora_continua.modelo.EstablecimientoOrdenacion">
+		<id column="rbd" property="rbd" />
+		<result column="ordenacion" property="ordenacion" />
+		<result column="anio" property="anio" />
+		<result column="nivel" property="nivel" />		
+	</resultMap>
+	
+	<sql id="query">
+		SELECT _ob.rbd,
+			   _ob.ordenacion, 
+			   _ob.anio,
+			   _ob.nivel
+		FROM came.came_establecimiento_ordenacion _ob
+	</sql>
+		
+	<select id="getByRbd" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ob.rbd = #{rbd}
+		order by _ob.anio desc
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _ob.rbd asc
+	</select>	
+</mapper>

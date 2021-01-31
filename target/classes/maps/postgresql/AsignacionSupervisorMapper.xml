@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.AsignacionSupervisorMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.AsignacionSupervisor">
+		<id column="id_asignacion_supervisor" property="idAsignacionSupervisor" />
+		<result column="id_periodo"	property="idPeriodo" />
+		<result column="id_asignacion_tipo"	property="idAsignacionTipo" />
+		<result column="fecha_registro"	property="fechaRegistro" />
+		<result column="fecha_creacion"	property="fechaCreacion" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+	</resultMap>
+	
+	<sql id="query">
+		select _as.id_asignacion_supervisor, 
+			   _as.id_periodo,
+			   _as.id_asignacion_tipo,
+			   _as.fecha_registro,
+			   _as.fecha_creacion,
+			   _as.id_usuario_registro
+		from came.came_asignacion_supervisor _as
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_asignacion_supervisor
+		where id_asignacion_supervisor = #{idAsignacionSupervisor}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.AsignacionSupervisor">
+		<selectKey keyColumn="id_asignacion_supervisor"
+			keyProperty="idAsignacionSupervisor" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_asignacion_supervisor (
+		id_asignacion_supervisor, 
+		id_periodo,
+		id_asignacion_tipo,
+		fecha_registro,
+		fecha_creacion,
+		id_usuario_registro)
+		values (
+				#{idAsignacionSupervisor},
+				#{idPeriodo},
+				#{idAsignacionTipo},
+				now(),
+				now(),
+				#{idUsuarioRegistro}
+			)
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.AsignacionSupervisor">
+		update came.came_asignacion_supervisor
+		set id_periodo = #{idPeriodo},
+		id_asignacion_tipo = #{idAsignacionTipo},
+		fecha_registro = now(),
+		id_usuario_registro = #{idUsuarioRegistro}
+		where id_asignacion_supervisor = #{idAsignacionSupervisor}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _as.id_asignacion_supervisor = #{idAsignacionSupervisor}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _as.id_asignacion_supervisor asc
+	</select>
+</mapper>

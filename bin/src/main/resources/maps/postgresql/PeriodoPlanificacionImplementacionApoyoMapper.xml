@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoPlanificacionImplementacionApoyoMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoPlanificacionImplementacionApoyo">
+		<id column="id_periodo_planificacion_implementacion_apoyo" jdbcType="BIGINT" property="idPeriodoPlanificacionImplementacionApoyo" />
+		<result column="id_periodo" jdbcType="BIGINT" property="idPeriodo" />
+		<result column="id_region" jdbcType="BIGINT" property="idRegion" />
+		<result column="id_deprov" jdbcType="BIGINT" property="idDeprov" />
+		<result column="fecha_inicio" property="fechaInicio" />
+		<result column="fecha_fin" property="fechaFin" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="es_caso_especial" property="esCasoEspecial" />
+	</resultMap>
+	
+	<sql id="implementacion_apoyo">
+		SELECT 
+			_pi.id_periodo_planificacion_implementacion_apoyo,
+			_pi.id_periodo,
+			_pi.fecha_registro,
+			_pi.fecha_inicio,
+			_pi.fecha_fin,
+			_pi.id_usuario_registro,
+			_pi.es_caso_especial
+		FROM
+			came.came_periodo_planificacion_implementacion_apoyo _pi
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_periodo_planificacion_implementacion_apoyo
+		where id_periodo_planificacion_implementacion_apoyo =
+		#{idPeriodoPlanificacionImplementacionApoyo,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoPlanificacionImplementacionApoyo">
+		<selectKey keyColumn="id_periodo_planificacion_implementacion_apoyo" keyProperty="idPeriodoPlanificacionImplementacionApoyo"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_periodo_planificacion_implementacion_apoyo
+		(
+			id_periodo_planificacion_implementacion_apoyo, 
+			id_periodo,
+			fecha_registro,
+			fecha_inicio,
+			fecha_fin,
+			id_usuario_registro,
+			es_caso_especial
+		)
+		values (
+			#{idPeriodoPlanificacionImplementacionApoyo,jdbcType=BIGINT},
+			#{idPeriodo,jdbcType=BIGINT},
+			now(),
+			#{fechaInicio},
+			#{fechaFin},
+			#{idUsuarioRegistro},
+			#{esCasoEspecial}
+		)
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoPlanificacionImplementacionApoyo">
+		update came.came_periodo_planificacion_implementacion_apoyo
+			set id_periodo = #{idPeriodo,jdbcType=BIGINT},
+				fecha_inicio = #{fechaInicio},
+				fecha_fin = #{fechaFin},
+				id_usuario_registro = #{idUsuarioRegistro},
+				fecha_registro = now(),
+				es_caso_espacial = #{esCasoEspecial}
+		where id_periodo_planificacion_implementacion_apoyo = #{idPeriodoPlanificacionImplementacionApoyo,jdbcType=BIGINT}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="implementacion_apoyo"></include>
+		where _pi.id_periodo_planificacion_implementacion_apoyo =
+		#{idPeriodoPlanificacionImplementacionApoyo,jdbcType=BIGINT}
+	</select>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="implementacion_apoyo"></include>
+		order by _pi.id_periodo_planificacion_implementacion_apoyo desc
+	</select>
+	
+	<select id="getByIdPeriodo" resultMap="BaseResultMap">
+		<include refid="implementacion_apoyo"></include>
+		where _pi.id_periodo = #{idPeriodo}
+		order by _pi.id_periodo_planificacion_implementacion_apoyo desc
+	</select>
+</mapper>

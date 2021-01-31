@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.RedSostenedorMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSostenedor">
+		<id column="id_red_sostenedor" jdbcType="BIGINT"
+			property="id_red_sostenedor" />
+		<result column="id_red" jdbcType="BIGINT" property="id_red" />
+		<result column="id_sostenedor" jdbcType="BIGINT"
+			property="id_sostenedor" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from came.red_sostenedor
+		where id_red_sostenedor = #{id_red_sostenedor,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSostenedor">
+		insert into came.red_sostenedor (id_red_sostenedor, id_red, id_sostenedor
+		)
+		values (#{id_red_sostenedor,jdbcType=BIGINT}, #{id_red,jdbcType=BIGINT},
+		#{id_sostenedor,jdbcType=BIGINT}
+		)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.RedSostenedor">
+		update came.red_sostenedor
+		set id_red = #{id_red,jdbcType=BIGINT},
+		id_sostenedor = #{id_sostenedor,jdbcType=BIGINT}
+		where id_red_sostenedor = #{id_red_sostenedor,jdbcType=BIGINT}
+	</update>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select 'false' as QUERYID,id_red_sostenedor, id_red, id_sostenedor
+		from came.red_sostenedor
+		where id_red_sostenedor = #{id_red_sostenedor,jdbcType=BIGINT}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id_red_sostenedor, id_red, id_sostenedor
+		from came.red_sostenedor
+	</select>
+</mapper>

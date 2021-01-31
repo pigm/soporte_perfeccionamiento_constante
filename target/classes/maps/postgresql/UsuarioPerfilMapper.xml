@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.UsuarioPerfilMapper">
+  <resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.UsuarioPerfil">
+    <id column="id_usuario_perfil" jdbcType="BIGINT" property="idUsuarioPerfil" />
+    <result column="id_usuario" jdbcType="BIGINT" property="idUsuario" />
+    <result column="id_perfil" jdbcType="BIGINT" property="idPerfil" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="status" property="status" />
+  </resultMap>
+
+  <sql id="query">
+		SELECT 
+			_up.id_usuario_perfil,
+      _up.id_usuario,
+      _up.id_perfil,
+      _up.start_date,
+      _up.end_date,
+      _up.status
+		FROM
+			came.came_usuario_perfil _up
+	</sql>
+
+  <delete id="deleteById" parameterType="java.lang.Long">
+    delete from came.came_usuario_perfil
+    where id_usuario_perfil = #{idUsuarioPerfil,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.UsuarioPerfil">
+    
+  <selectKey keyColumn="id_usuario_perfil" keyProperty="idUsuarioPerfil"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+    insert into came.came_usuario_perfil (id_usuario_perfil, id_usuario, id_perfil, 
+      start_date, end_date, status
+      )
+    values (#{idUsuarioPerfil,jdbcType=BIGINT}, #{idUsuario,jdbcType=BIGINT}, #{idPerfil,jdbcType=BIGINT}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 't'
+      )
+  </insert>
+    
+  <update id="updateById" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.UsuarioPerfil">
+    update came.came_usuario_perfil
+    set id_usuario = #{idUsuario,jdbcType=BIGINT},
+      id_perfil = #{idPerfil,jdbcType=BIGINT},
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      status = 't'
+    where id_usuario_perfil = #{idUsuarioPerfil,jdbcType=BIGINT}
+  </update>
+
+  <select id="getByIdUsuario" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <include refid="query"/>
+    where _up.id_usuario = #{id_usuario,jdbcType=BIGINT}
+  </select>
+  
+  <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <include refid="query"/>
+    where _up.id_usuario_perfil = #{idUsuarioPerfil,jdbcType=BIGINT}
+  </select>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    <include refid="query"/>
+		order by _up.id_usuario_perfil asc
+  </select>
+</mapper>

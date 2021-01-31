@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.ObjetivoMejoraMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.ObjetivoMejora">
+		<id column="id_objetivo_mejora"	property="idObjetivoMejora" />
+		<result column="id_sesion" property="idSesion" />
+		<result column="numero" property="numero" />
+		<result column="objetivo" property="objetivo" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+	</resultMap>
+	
+	 <sql id="query">
+		 select _om.id_objetivo_mejora, 
+		 		_om.id_sesion, 
+				_om.numero, 
+				_om.objetivo, 
+				_om.id_usuario_registro, 
+				_om.fecha_registro
+		from came.came_objetivo_mejora _om
+	 </sql>	
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.objetivo_mejora
+		where id_objetivo_mejora = #{idObjetivoMejora}
+	</delete>
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.ObjetivoMejora">
+			<selectKey keyColumn="id_objetivo_mejora"
+			keyProperty="idObjetivoMejora" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_objetivo_mejora (
+				id_objetivo_mejora, 
+				id_sesion, 
+				numero, 
+				objetivo, 
+				id_usuario_registro, 
+				fecha_registro
+			)
+		values (
+				#{idObjetivoMejora}, 
+				#{idSesion}, 
+				#{numero}, 
+				#{objetivo}, 
+				#{idUsuarioRegistro}, 
+				#{fechaRegistro}
+		)
+	</insert>
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.ObjetivoMejora">
+		update came.came_objetivo_mejora
+		set id_sesion=#{idSesion}, 
+			numero=#{numero}, 
+			objetivo=#{objetivo}, 
+			id_usuario_registro=#{idUsuarioRegistro}, 
+			fecha_registro=#{fechaRegistro}
+		where id_objetivo_mejora = #{idObjetivoMejora}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _om.id_objetivo_mejora = #{idObjetivoMejora}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		 <include refid="query"></include>
+		 order by _om.id_objetivo_mejora asc
+	</select>
+
+	<select id="getByIdSesion" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _om.id_sesion = #{idSesion}
+	</select>
+</mapper>

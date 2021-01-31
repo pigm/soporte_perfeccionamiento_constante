@@ -1,0 +1,425 @@
+/** mineduc-custom.css
+
+* bootstrap theme for MINEDUC web apps
+* 
+* @version 2.0 
+* @author mineduc.cl
+* ===================================
+* colores basicos gob.cl / mineduc.cl
+* #006BB7 azul claro
+* #1B4B73 azul oscuro/marino
+* #EF4143 rojo gob
+* #EF6769 rojo gob claro 
+* #036AB5 azul gob
+* #006BB7 azul primary
+*/
+@font-face {
+	font-family: 'gobCL';
+	/* Para Internet Explorer */
+	src: url('../fonts/gobcl_regular-webfont.eot');
+	/*  Para el resto de navegadores */
+	src: local('gobCL'), url('../fonts/gobcl_regular-webfont.ttf')
+		format('truetype');
+}
+
+body {
+	color: #707070;
+	background: #f5f5f5;
+}
+
+address {
+    color: #666666;
+    font-size: 12px;
+    font-style: normal !important;
+    line-height: 16px !important;
+}
+
+.font-gob{
+	font-family: 'gobCL';
+}
+
+.page-mineduc{
+	min-height: 118px;
+	background: #fff url(../images/) repeat-x scroll 0 0;
+}
+
+.page-mineduc.minimal-header{
+	min-height: 0px !important;
+	background: none !important;
+	/*background-color: #cecece;*/
+}
+
+.bicolor{
+	position: relative;
+	margin: 0;
+	width: 170px;
+	height: 20px;
+}
+
+.bicolor span {
+    display: block;
+    float: left;
+    height: 100%;
+}
+
+.bicolor span.azul {
+    background: #0f69b4;
+    width: 46%;
+}
+
+.bicolor span.rojo {
+    background: #EB3646;
+    width: 54%;
+}
+
+.page-mineduc img.logo-mineduc{
+	min-height: 118px;
+	padding-top: 0px;
+	float: left;
+}
+
+.title-application{
+	padding-top: 39px;
+	text-align: right;
+	margin-bottom: 50px;
+}
+
+.minimal-header > .title-application{
+	padding-top: 0px !important;
+	text-align: right;
+	margin-bottom: 10px !important;
+	margin-top: -7px;
+}
+
+.user-info{
+	margin-bottom: 10px;
+}
+
+.userbox{
+	padding:4px 4px;
+	border: #ddd 1px solid;
+	background: #fff;
+	border-top-right-radius: 2px;
+	border-top-left-radius: 2px;
+	-moz-border-radius-topright: 2px;
+	-moz-border-radius-topleft: 2px;
+	-ms-border-radius-topleft: 2px;
+	-ms-border-radius-topright: 2px;
+	-webkit-border-top-right-radius: 2px;
+	-webkit-border-top-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-bottom-left-radius: 2px;
+	-moz-border-radius-bottomright: 2px;
+	-moz-border-radius-bottomleft: 2px;
+	-ms-border-radius-bottomleft: 2px;
+	-ms-border-radius-bottomright: 2px;
+	-webkit-border-bottom-right-radius: 2px;
+	-webkit-border-bottom-left-radius: 2px;
+}
+
+.minimal-header > h1.title-application {
+	font-size: 21px !important; 
+}
+
+.line-separator{
+	border: 0;
+	width:100%;
+	margin: 10px auto;
+}
+.line-separator.red{
+	border-top: 1px solid #E62633;
+}
+.line-separator.blue{
+	border-top: 1px solid #006BB7;
+}
+
+.red-text{
+	color: #E62633 !important;
+}
+
+.blue-text{
+	color: #006BB7 !important;
+}
+
+hr.line-separator{
+	position: relative;
+	margin: 5px auto;
+}
+
+hr.line-separator.bicolor.blue{
+	border-top: 2px solid #006BB7;
+	width: 32%;
+	float:left;
+}
+
+hr.line-separator.bicolor.red{
+	border-top: 2px solid #E62633;
+	width: 68%;
+	float:left;
+}
+
+/** override or extends bootstrap with custom styles**/
+
+.btn-primary-gradient {
+	background-color: #006BB7;
+	border-color: #006BB7;
+	color: #fff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+	background-color: #005fa3;
+	background-image: -moz-linear-gradient(top,#006BB7,#004d84);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#006BB7),to(#004d84));
+	background-image: -webkit-linear-gradient(top,#006BB7,#004d84);
+	background-image: -o-linear-gradient(top,#006BB7,#004d84);
+	background-image: linear-gradient(to bottom,#006BB7,#004d84);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff006bb7', endColorstr='#ff004d84', GradientType=0);
+	border-color: #004d84 #004d84 #002038;
+	border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+}
+.btn-primary-gradient:hover,
+.btn-primary-gradient:focus {
+	color: #fff;
+	text-decoration: none;
+	background-position: 0 -15px;
+	-webkit-transition: background-position .1s linear;
+	-moz-transition: background-position .1s linear;
+	-o-transition: background-position .1s linear;
+	transition: background-position .1s linear;
+}
+.btn-primary-gradient:hover,
+.btn-primary-gradient:focus {
+	background-color: #004d84;
+}
+.btn-primary-gradient:active,
+.btn-primary-gradient.active,
+.btn-primary-gradient.active:hover {
+	background-color: #005c9e;
+	border-color: #004d84;
+}
+.btn-primary-gradient.disabled:hover,
+.btn-primary-gradient.disabled:focus,
+.btn-primary-gradient.disabled:active,
+.btn-primary-gradient.disabled.active,
+.btn-primary-gradient[disabled] .btn-primary-gradient:hover,
+.btn-primary-gradient[disabled] .btn-primary-gradient:focus,
+.btn-primary-gradient[disabled] .btn-primary-gradient:active,
+.btn-primary-gradient[disabled] .btn-primary-gradient.active {
+	background-color: #006BB7;
+	border-color: #006BB7;
+}
+
+.btn-default-gradient {
+  background-color: #e6e6e6;
+  border-color: #e6e6e6;
+  color: #333;
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+  background-color: #dcdcdc;
+  background-image: -moz-linear-gradient(top,#e6e6e6,#cdcdcd);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#e6e6e6),to(#cdcdcd));
+  background-image: -webkit-linear-gradient(top,#e6e6e6,#cdcdcd);
+  background-image: -o-linear-gradient(top,#e6e6e6,#cdcdcd);
+  background-image: linear-gradient(to bottom,#e6e6e6,#cdcdcd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6', endColorstr='#ffcccccc', GradientType=0);
+  border-color: #cdcdcd #cdcdcd #a6a6a6;
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+}
+.btn-default-gradient:hover,
+.btn-default-gradient:focus {
+  text-decoration: none;
+  background-position: 0 -15px;
+  -webkit-transition: background-position .1s linear;
+  -moz-transition: background-position .1s linear;
+  -o-transition: background-position .1s linear;
+  transition: background-position .1s linear;
+}
+.btn-default-gradient:hover,
+.btn-default-gradient:focus {
+  background-color: #cdcdcd;
+}
+.btn-default-gradient:active,
+.btn-default-gradient.active,
+.btn-default-gradient.active:hover {
+  background-color: #d9d9d9;
+  border-color: #cdcdcd;
+}
+.btn-default-gradient.disabled:hover,
+.btn-default-gradient.disabled:focus,
+.btn-default-gradient.disabled:active,
+.btn-default-gradient.disabled.active,
+.btn-default-gradient[disabled] .btn-default-gradient:hover,
+.btn-default-gradient[disabled] .btn-default-gradient:focus,
+.btn-default-gradient[disabled] .btn-default-gradient:active,
+.btn-default-gradient[disabled] .btn-default-gradient.active {
+  background-color: #e6e6e6;
+  border-color: #e6e6e6;
+}
+
+.nav-tabs > li > a, .nav-tabs > li > a.dropdown-toggle {
+    border: 1px solid #ddd !important;
+    border-bottom: 1px solid transparent !important;
+    border-radius: 4px 4px 0 0;
+    line-height: 1.42857;
+    margin-right: 2px;
+}
+.nav-tabs > li > a:hover {
+    background-color: #f5f5f5 !important;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+	background-color: #f5f5f5 !important;
+}
+
+.alert > span.glyphicon{
+	float: left;
+	font-size: 24px;
+	line-height: 27px;
+	font-weight:lighter;
+	margin: 10px 10px 0 0;
+}
+
+.alert > p{
+	font-family: 'gobCL';
+	font-size: 16px;
+	line-height: 18px;
+	text-align: justify;
+	margin-left: 40px;
+	margin-bottom: 15px;
+	margin-right: 10px;
+}
+
+.alert-success, .alert-info, .alert-warning, .alert-danger{
+    border-width: 2px;
+}
+
+.white-bg{
+	background-color: #ffffff !important;
+}
+
+.container.content, .container-fluid.content{
+	background-color: #f5f5f5;
+}
+
+/** inline forms inputs rules **/
+.form-group > input[type=text]{
+	margin-bottom: 5px;
+}
+
+/** override bootstrap**/
+
+.container, .container-fluid{
+	padding:0 10px 10px;
+	list-style-image: url(../images/vineta-gob.png);
+}
+
+.container.with-outline, .container-fluid.with-outline, .breadcrumb.with-outline{
+	margin-top: -1px;
+	border-top: 1px solid #dedede;
+	border-left: 1px solid #dedede;
+	border-bottom: 1px solid #dedede;
+	border-right: 1px solid #dedede;
+}
+
+.breadcrumb{
+	color: #B1B1B1;
+}
+
+.breadcrumb .active{
+    font-weight: bold;
+    color: #b1b1b1;
+}
+
+.modal-dialog.fullscreen {
+	width: 80%;
+	height: 90%;
+	margin: 2% auto;
+	padding: 0;
+}
+
+.modal-dialog.fullscreen > .modal-content {
+	height: auto;
+	min-height: 100%;
+	border-radius: 0;
+}
+
+/** AUXILIARES **/
+
+.text-blue-light {
+    color: #036ab5;
+    font-weight: lighter;
+}
+
+.text-align-left{
+	text-align: left !important;
+}
+.text-align-right{
+	text-align: right !important;
+}
+.text-align-center{
+	text-align: center !important;
+}
+.no-padding > label, .no-padding > label{
+	padding: 0 !important;
+}
+
+.rounded-top {
+	border-top-right-radius: 7px;
+	border-top-left-radius: 7px;
+	-moz-border-radius-topright: 7px;
+	-moz-border-radius-topleft: 7px;
+	-ms-border-radius-topleft: 7px;
+	-ms-border-radius-topright: 7px;
+	-webkit-border-top-right-radius: 7px;
+	-webkit-border-top-left-radius: 7px;
+}
+
+.rounded-bottom {
+	border-bottom-right-radius: 7px;
+	border-bottom-left-radius: 7px;
+	-moz-border-radius-bottomright: 7px;
+	-moz-border-radius-bottomleft: 7px;
+	-ms-border-radius-bottomleft: 7px;
+	-ms-border-radius-bottomright: 7px;
+	-webkit-border-bottom-right-radius: 7px;
+	-webkit-border-bottom-left-radius: 7px;
+}
+
+/** Estilos tabla mineduc **/
+
+table.mineduc{
+	width: 100%;
+	margin: 10px auto;
+	border: 1px solid #dedede;
+	padding:1px;
+}
+
+/* Header cells */
+table.mineduc > thead > tr > th{
+	margin:2px;
+	padding: 10px 0px 10px 5px;
+	color: #ffffff;
+	background-color: #2e75c5;
+	border: 1px solid #036AB5 !important;
+}
+table.mineduc > thead > tr > th > a{
+	color: #ffffff;
+}
+table.mineduc > thead > tr > th .popover{
+	color: #697680;
+}
+table.mineduc > tbody > tr > th{
+	padding: 5px 0px 5px 5px;
+	background: #bee3ee;
+}
+table.mineduc > tbody > tr:hover > td,
+table.mineduc > tbody > tr.odd:hover > td{
+	background: none repeat scroll 0 0 #cecece;
+	color:#333333;
+}
+table.mineduc > tbody > tr > td{
+	padding: 5px 2px;
+	border-right: 1px solid #dedede;
+	border-left: 1px solid #dedede;
+}
+table.mineduc > tbody > tr.odd > td { 
+	background: #efefef;
+}

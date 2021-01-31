@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.MatriculaMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.Matricula">
+		<id column="id_matricula" property="id_matricula" />
+		<result column="id_matricula_etnia" property="id_matricula_etnia" />
+		<result column="id_nivel" property="id_nivel" />
+		<result column="id_establecimiento" property="id_establecimiento" />
+	</resultMap>
+	
+	<sql id="query">
+		select _m.id_matricula, 
+			   _m.id_matricula_etnia, 
+			   _m.id_nivel, 
+			   _m.id_establecimiento
+		from came.came_matricula _m
+	</sql>		
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_matricula
+		where id_matricula = #{idMatricula,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Matricula">
+		insert into came.came_matricula (id_matricula, id_matricula_etnia, id_nivel, id_establecimiento)
+		values (#{matricula.idMatricula,jdbcType=BIGINT},
+				#{matricula.idMatricula_etnia,jdbcType=BIGINT}, 
+				#{matricula.idNivel,jdbcType=BIGINT},
+				#{matricula.idEstablecimiento,jdbcType=BIGINT})
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Matricula">
+		update came.came_matricula
+		set id_matricula_etnia = #{matricula.idMatricula_etnia,jdbcType=BIGINT},
+			id_nivel = #{matricula.idNivel,jdbcType=BIGINT},
+			id_establecimiento = #{matricula.idEstablecimiento,jdbcType=BIGINT}
+		where id_matricula = #{matricula.idMatricula,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where id_matricula = #{idMatricula,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _m.id_matricula asc
+	</select>
+</mapper>

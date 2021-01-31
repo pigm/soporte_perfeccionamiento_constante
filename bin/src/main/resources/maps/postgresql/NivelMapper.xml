@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.NivelMapper">
+  <resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Nivel">
+    <id column="id_nivel" property="idNivel" />
+  </resultMap>
+  
+  <sql id="query">
+	 select _n.id_nivel
+     from came.nivel _n
+  </sql>
+  
+  <delete id="deleteById" parameterType="java.lang.Long">
+    delete from came.nivel
+    where id_nivel = #{idNivel,jdbcType=BIGINT}
+  </delete>
+    
+  <insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Nivel">
+    insert into came.nivel (id_nivel)
+    values (#{nivel.idNivel,jdbcType=BIGINT})
+  </insert>
+    
+  <select id="getAll" resultMap="BaseResultMap">
+    <include refid="query"></include>
+	order by _n.id_nivel asc
+  </select>
+</mapper>

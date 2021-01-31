@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EstablecimientoClasificacionSepMapper">
+	<resultMap id="BaseResultMap"	type="cl.mineduc.came.apoyo_mejora_continua.modelo.EstablecimientoClasificacionSep">
+		<id column="rbd" property="rbd" />
+		<result column="id_clasificacion_sep" property="idClasificacionSep" />
+		<result column="clasificacion" property="clasificacion" />
+	</resultMap>
+	
+	<sql id="query">
+		SELECT _ecs.rbd, 
+			   _ecs.id_clasificacion_sep, 
+			   _ecs.clasificacion
+		FROM came.came_establecimiento_clasificacion_sep _ecs
+	</sql>
+		
+	<select id="getByRdb" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ecs.rbd = #{rdb}
+		order by _ecs.rbd asc
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _ecs.rbd asc
+	</select>	
+</mapper>

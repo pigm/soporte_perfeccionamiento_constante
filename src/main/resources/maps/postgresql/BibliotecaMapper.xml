@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.BibliotecaMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Biblioteca">
+		<id column="id_biblioteca" property="idBiblioteca" />
+		<result column="id_categoria" property="idCategoria" />		
+		<result column="nombre_documento" property="nombreDocumento" />	
+		<result column="template_path" property="templatePath" />	
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />	
+		<result column="fecha_registro" property="fechaRegistro" />	
+	</resultMap>
+	
+	<sql id="query">
+		SELECT _dp.id_biblioteca, 
+			   _dp.id_categoria, 
+			   _dp.nombre_documento, 
+			   _dp.template_path, 
+			   _dp.id_usuario_registro, 
+			   _dp.fecha_registro
+		FROM came.came_biblioteca _dp
+	</sql>	
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_biblioteca
+		where id_biblioteca = #{idBiblioteca,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Biblioteca">
+		<selectKey keyColumn="id_biblioteca" keyProperty="idBiblioteca" order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_biblioteca 
+		(
+			id_biblioteca, 
+			id_categoria, 
+			nombre_documento, 
+			template_path, 
+			id_usuario_registro, 
+			fecha_registro
+		)
+		values (
+			#{idBiblioteca ,jdbcType=BIGINT},
+			#{idCategoria},
+			#{nombreDocumento},
+			#{templatePath},
+			#{idUsuarioRegistro},
+			now()
+		)
+	</insert>
+
+	<update id="update"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Biblioteca">
+		update came.came_biblioteca
+		set id_categoria=#{idCategoria}, 
+			nombre_documento=#{nombreDocumento}
+		where id_biblioteca = #{idBiblioteca,jdbcType=BIGINT}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _dp.id_biblioteca asc
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _dp.id_biblioteca = #{idBiblioteca,jdbcType=BIGINT}
+	</select>
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.SubModuloMapper">
+
+	<resultMap id="subModuloResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.SubModulo">
+		<id property="idSubModulo" column="id_sub_modulo"/>
+		<result property="idModulo" column="id_modulo"/>		
+		<result property="idEstado" column="id_estado"/>
+		<result property="nombre" column="nombre"/>		
+		<result property="status" column="status"/>
+		<result property="url" column="url"/>
+		
+		<collection property="perfilMenu" 
+				column="id_sub_modulo"  
+				notNullColumn="id_sub_modulo"
+				select="cl.mineduc.came.apoyo_mejora_continua.mappers.PerfilMenuMapper.getByIdSubModulo"
+				foreignColumn="id_sub_modulo"
+				/>		
+	</resultMap>
+
+	<sql id="subModulo">
+		SELECT
+			_sm.id_sub_modulo, 
+			_sm.id_modulo,
+			_sm.id_estado,
+			_sm.nombre,						
+			_sm.status,
+			_sm.url
+		FROM
+			came.came_sub_modulo _sm
+	</sql>
+
+	<select id="getAll" resultType="cl.mineduc.came.apoyo_mejora_continua.modelo.SubModulo" resultMap="subModuloResultMap">
+		<include refid="subModulo"/>
+		order by _sm.id_sub_modulo asc
+	</select>
+
+	<select id="getSubModuloById" resultMap="subModuloResultMap"
+		parameterType="java.lang.Long">
+		<include refid="subModulo"></include>
+		WHERE _sm.id_sub_modulo = #{id}
+	</select>
+	
+	<select id="getSubModuloByName" resultMap="subModuloResultMap"
+		parameterType="String">
+		<include refid="subModulo"></include>
+		WHERE _sm.nombre = #{name}
+	</select>
+
+	<select id="getSubModuloByUrl" resultMap="subModuloResultMap"
+		parameterType="String">
+		<include refid="subModulo"></include>
+
+		WHERE _sm.url LIKE CONCAT('%', #{url}, '%')
+	</select>
+		
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_sub_modulo
+		where id_sub_modulo = #{idSubModulo,jdbcType=BIGINT}
+	</delete>
+	
+
+	<insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SubModulo">
+		<selectKey keyColumn="id_sub_modulo" keyProperty="idSubModulo"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		INSERT INTO came.came_sub_modulo (
+						id_sub_modulo,
+						id_modulo,
+						id_estado,
+						nombre,						
+						status,
+						url
+						) 
+						VALUES (
+							#{subModulo.idSubModulo},
+							#{subModulo.idModulo},
+							#{subModulo.idEstado},
+							#{subModulo.nombre},
+							#{subModulo.status},
+							#{url}
+						 );
+
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SubModulo">
+		update came.came_sub_modulo
+			set id_estado = #{subModulo.idEstado,jdbcType=BIGINT},
+				id_modulo = #{subModulo.idModulo,jdbcType=BIGINT},
+				nombre = #{subModulo.nombre,jdbcType=VARCHAR},
+				status = #{subModulo.status,jdbcType=BIT},
+				url = #{subModulo.url,jdbcType=VARCHAR},
+		where id_sub_modulo = #{subModulo.idSubModulo,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="subModuloResultMap">
+		<include refid="subModulo"></include>
+		where _sm.id_sub_modulo = #{idSubModulo,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getByIdModulo" parameterType="java.lang.Long"
+		resultMap="subModuloResultMap">
+		<include refid="subModulo"></include>
+		where _sm.id_modulo = #{idModulo,jdbcType=BIGINT}
+		order by _sm.id_sub_modulo asc
+	</select>
+</mapper>

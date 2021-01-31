@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EstadoMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Estado">
+		<id column="id_estado" property="idEstado" />
+		<result column="nombre" property="nombre" />
+	</resultMap>
+	
+	<sql id="query">
+		select _e.id_estado, 
+			   _e.nombre
+		from came.came_estado _e
+	</sql>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from came.came_estado
+		where id_estado = #{idEstado,jdbcType=BIGINT}
+	</delete>
+	
+	
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Estado">
+	<selectKey keyColumn="id_estado" keyProperty="idEstado"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_estado (id_estado, nombre)
+		values (#{idEstado,jdbcType=BIGINT}, 
+				#{nombre,jdbcType=VARCHAR})
+	</insert>
+	
+	
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Estado">
+		update came.came_estado
+		set nombre = #{nombre,jdbcType=VARCHAR}
+		where id_estado = #{idEstado,jdbcType=BIGINT}
+	</update>
+	
+	
+	<select id="getById" parameterType="java.lang.Long"	resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where id_estado = #{_e.idEstado,jdbcType=BIGINT}
+	</select>
+		
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _e.id_estado asc
+	</select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.AsesoriaMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.Asesoria">
+		<id column="id_asesoria" property="idAsesoria" />
+		<result column="id_supervisor_establecimiento"	property="idSupervisorEstablecimiento" />
+	</resultMap>
+	
+	<sql id="query">
+		select _a.id_asesoria, 
+			   _a.id_supervisor_establecimiento
+		from came.came_asesoria _a
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_asesoria
+		where id_asesoria = #{id_asesoria,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Asesoria">
+		<selectKey keyColumn="id_asesoria"
+			keyProperty="idAsesoria" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_asesoria (id_asesoria, id_supervisor_establecimiento)
+		values (
+				#{asesoria.idAsesoria,jdbcType=BIGINT},
+				#{asesoria.idSupervisorEstablecimiento,jdbcType=BIGINT}
+			)
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Asesoria">
+		update came.came_asesoria
+		set id_supervisor_establecimiento =
+		#{id_supervisor_establecimiento,jdbcType=BIGINT}
+		where id_asesoria = #{asesoria.idAsesoria,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _a.id_asesoria = #{idAsesoria,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _a.id_asesoria asc
+	</select>
+</mapper>

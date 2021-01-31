@@ -1,0 +1,32 @@
+/* ===============================================
+1. Patrones de colores
+=============================================== */
+
+$primary: #006bb7;
+$secondary: #EFEFEF;
+$success: #4f8a10;
+$info: #00529b;
+$warning: #f0ad4e;
+$danger: #d8000c;
+
+
+/* ===============================================
+2. Modificando variables
+================================================= */
+
+// Modificando el mapa de colores
+$theme-colors:(
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+);
+
+
+/* ===============================================
+Importando bootstrap
+=============================================== */
+
+@import"../libs/bootstrap-4.5.2/scss/bootstrap.scss";

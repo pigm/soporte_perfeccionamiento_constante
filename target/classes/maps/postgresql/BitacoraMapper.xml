@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.BitacoraMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Bitacora">
+		<id column="id_bitacora" property="idBitacora" />
+		<result column="usuario_dominio" property="usuarioDominio" />
+		<result column="profile" property="profile" />
+		<result column="modulo" property="modulo" />
+		<result column="sub_modulo" property="subModulo" />
+		<result column="evento" property="evento" />
+		<result column="data" property="data" />
+		<result column="fecha" property="fecha" />
+	</resultMap>
+
+	<sql id="query">
+		select 
+			_b.id_bitacora, 
+			_b.usuario_dominio, 
+			_b.profile, 
+			_b.modulo, 
+			_b.sub_modulo, 
+			_b.evento, 
+			_b.data, 
+			_b.fecha
+		from came.came_bitacora _b
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+			came.came_bitacora
+		where id_bitacora =	#{idBitacora}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Bitacora">
+		<selectKey keyColumn="id_bitacora"
+			keyProperty="idBitacora" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_bitacora
+		(
+			id_bitacora, 
+			usuario_dominio, 
+			profile, 
+			modulo, 
+			sub_modulo, 
+			evento, 
+			data, 
+			fecha		
+		)
+		values
+		(
+			#{idBitacora},
+			#{usuarioDominio}, 
+			#{profile}, 
+			#{modulo}, 
+			#{subModulo}, 
+			#{evento}, 
+			#{data}, 
+			#{fecha}		
+		)
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Bitacora">
+		update came.came_bitacora
+		set usuario_dominio=#{usuarioDominio}, 
+			profile=#{profile}, 
+			modulo=#{modulo}, 
+			sub_modulo=#{subModulo}, 
+			evento=#{evento}, 
+			data=#{data}, 
+			fecha=#{fecha}
+		where
+		id_bitacora =
+		#{idBitacora,jdbcType=BIGINT}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _mc.id_bitacora =	#{idBitacora,jdbcType=BIGINT}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _mc.id_bitacora asc
+	</select>	
+
+</mapper>

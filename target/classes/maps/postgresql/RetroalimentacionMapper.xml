@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.RetroalimentacionMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Retroalimentacion">
+		<id column="id_retroalimentacion"	property="idRetroalimentacion" />
+		<result column="id_supervisor" property="idSupervisor" />
+		<result column="id_periodo" property="idPeriodo" />
+		<result column="id_usuario" property="idUsuario" />
+		<result column="id_momento_asesoria" property="idMomentoAsesoria" />
+		<result column="id_retroalimentacion_frecuencia" property="idRetroalimentacionFrecuencia" />
+		<result column="id_region" property="idRegion" />
+		<result column="id_deprov" property="idDeprov" />
+		<result column="numero" property="numero" />
+		<result column="semestre" property="semestre" />
+		<result column="fecha_planificacion" property="fechaPlanificacion" />
+		<result column="fecha_registro_sesion" property="fechaRegistroSesion" />
+		<result column="fecha_registro_jefe_tecnico" property="fechaRegistroJefeTecnico" />
+		<result column="practica_abordada" property="practicaAbordada" />
+		<result column="acuerdos" property="acuerdos" />
+		<result column="acciones" property="acciones" />
+		<result column="observaciones" property="observaciones" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="id_siguiente_retroalimentacion" property="idSiguienteRetroalimentacion" />		
+	</resultMap>
+	
+	 <sql id="query">
+		SELECT 
+			_r.id_retroalimentacion, 
+			_r.id_supervisor, 
+			_r.id_periodo, 
+			_r.id_usuario, 
+			_r.id_momento_asesoria, 
+			_r.id_retroalimentacion_frecuencia, 
+			_r.id_region,
+			_r.id_deprov,
+			_r.numero, 
+			_r.semestre, 
+			_r.fecha_planificacion, 
+			_r.fecha_registro_sesion, 
+			_r.fecha_registro_jefe_tecnico, 
+			_r.practica_abordada, 
+			_r.acuerdos, 
+			_r.acciones, 
+			_r.observaciones, 
+			_r.id_usuario_registro, 
+			_r.fecha_registro,
+			_r.id_siguiente_retroalimentacion
+		FROM came.came_retroalimentacion _r
+	 </sql>	
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_retroalimentacion
+		where id_retroalimentacion = #{idRetroalimentacion}
+	</delete>
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Retroalimentacion">
+			<selectKey keyColumn="id_retroalimentacion"
+			keyProperty="idRetroalimentacion" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_retroalimentacion (
+				id_retroalimentacion, 
+				id_supervisor, 
+				id_periodo, 
+				id_usuario, 
+				id_momento_asesoria, 
+				id_retroalimentacion_frecuencia, 
+				id_region,
+				id_deprov,
+				numero, 
+				semestre, 
+				fecha_planificacion, 
+				fecha_registro_sesion, 
+				fecha_registro_jefe_tecnico, 
+				practica_abordada, 
+				acuerdos, 
+				acciones, 
+				observaciones, 
+				id_usuario_registro, 
+				fecha_registro,
+				id_siguiente_retroalimentacion
+			)
+		values (
+				#{idRetroalimentacion}, 
+				#{idSupervisor}, 
+				#{idPeriodo}, 
+				#{idUsuario}, 
+				#{idMomentoAsesoria}, 
+				#{idRetroalimentacionFrecuencia}, 
+				#{idRegion},
+				#{idDeprov},
+				#{numero}, 
+				#{semestre}, 
+				#{fechaPlanificacion}, 
+				#{fechaRegistroSesion}, 
+				#{fechaRegistroJefeTecnico}, 
+				#{practicaAbordada}, 
+				#{acuerdos}, 
+				#{acciones}, 
+				#{observaciones}, 
+				#{idUsuarioRegistro}, 
+				#{fechaRegistro},
+				#{idSiguienteRetroalimentacion}
+		)
+	</insert>
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Retroalimentacion">
+		update came.came_retroalimentacion
+		set id_retroalimentacion=#{idRetroalimentacion}, 
+			id_supervisor=#{idSupervisor}, 
+			id_periodo=#{idPeriodo}, 
+			id_usuario=#{idUsuario}, 
+			id_momento_asesoria=#{idMomentoAsesoria}, 
+			id_retroalimentacion_frecuencia=#{idRetroalimentacionFrecuencia}, 
+			id_region=#{idRegion},
+			id_deprov=#{idDeprov},
+			numero=#{numero}, 
+			semestre=#{semestre}, 
+			fecha_planificacion=#{fechaPlanificacion}, 
+			fecha_registro_sesion=#{fechaRegistroSesion}, 
+			fecha_registro_jefe_tecnico=#{fechaRegistroJefeTecnico}, 
+			practica_abordada=#{practicaAbordada}, 
+			acuerdos=#{acuerdos}, 
+			acciones=#{acciones}, 
+			observaciones=#{observaciones}, 
+			id_usuario_registro=#{idUsuarioRegistro}, 
+			fecha_registro=#{fechaRegistro},
+			id_siguiente_retroalimentacion = #{idSiguienteRetroalimentacion}
+		where id_retroalimentacion = #{idRetroalimentacion}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _r.id_retroalimentacion = #{idRetroalimentacion}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		 <include refid="query"></include>
+		 order by _r.id_retroalimentacion asc
+	</select>
+
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _r.id_periodo = #{idPeriodo}
+	</select>
+</mapper>

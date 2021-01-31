@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.SesionRedParticipantesMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.SesionRedParticipantes">
+		<id column="id_sesion_red_participantes"	property="idSesionRedParticipantes" />
+		<result column="id_sesion" property="idSesion" />
+		<result column="tipo" property="tipo" />
+		<result column="rbd" property="rbd" />
+		<result column="rutSostenedor" property="rutSostenedor" />
+		<result column="presente" property="presente" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+	</resultMap>
+	
+	 <sql id="query">
+		SELECT _srp.id_sesion_red_participantes, 
+			   _srp.id_sesion, 
+			   _srp.tipo, 
+			   _srp.rbd, 
+			   _srp.rut_sostenedor, 
+			   _srp.presente, 
+			   _srp.id_usuario_registro, 
+			   _srp.fecha_registro
+		FROM came.came_sesion_red_participantes _srp
+	 </sql>	
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_sesion_red_participantes
+		where id_sesion_red_participantes = #{idSesionRedParticipantes}
+	</delete>
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SesionRedParticipantes">
+			<selectKey keyColumn="id_sesion_red_participantes"
+			keyProperty="idSesionRedParticipantes" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_sesion_red_participantes (
+				id_sesion_red_participantes, 
+				id_sesion, 
+				tipo, 
+				rbd, 
+				rut_sostenedor, 
+				presente, 
+				id_usuario_registro, 
+				fecha_registro
+			)
+		values (
+				#{idSesionRedParticipantes}, 
+				#{idSesion}, 
+				#{tipo}, 
+				#{rbd}, 
+				#{rutSostenedor}, 
+				#{presente}, 
+				#{idUsuarioRegistro}, 
+				#{fechaRegistro}
+		)
+	</insert>
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SesionRedParticipantes">
+		update came.came_sesion_red_participantes
+		set id_sesion=#{idSesion}, 
+			tipo=#{tipo}, 
+			rbd=#{rbd}, 
+			rut_sostenedor=#{rutSostenedor}, 
+			presente=#{presente}, 
+			id_usuario_registro=#{idUsuarioRegistro}, 
+			fecha_registro=#{fecha_registro}
+		where id_sesion_red_participantes = #{idSesionRedParticipantes}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _srp.id_sesion_red_participantes = #{idSesionRedParticipantes}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		 <include refid="query"></include>
+		 order by _om.id_sesion_red_participantes asc
+	</select>
+
+	<select id="getByIdSesion" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _srp.id_sesion = #{idSesion}
+	</select>
+</mapper>

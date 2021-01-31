@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.SupervisorEstablecimientoMapper">
+  <resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.SupervisorEstablecimiento">
+    <id column="id_supervisor_establecimiento" jdbcType="BIGINT" property="id_supervisor_establecimiento" />
+    <result column="id_asignacion_tipo" jdbcType="BIGINT" property="id_asignacion_tipo" />
+    <result column="id_supervisor" jdbcType="BIGINT" property="id_supervisor" />
+    <result column="id_red" jdbcType="BIGINT" property="id_red" />
+    <result column="id_establecimiento" jdbcType="BIGINT" property="id_establecimiento" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from came.supervisor_establecimiento
+    where id_supervisor_establecimiento = #{id_supervisor_establecimiento,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SupervisorEstablecimiento">
+    insert into came.supervisor_establecimiento (id_supervisor_establecimiento, id_asignacion_tipo, 
+      id_supervisor, id_red, id_establecimiento
+      )
+    values (#{id_supervisor_establecimiento,jdbcType=BIGINT}, #{id_asignacion_tipo,jdbcType=BIGINT}, 
+      #{id_supervisor,jdbcType=BIGINT}, #{id_red,jdbcType=BIGINT}, #{id_establecimiento,jdbcType=BIGINT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SupervisorEstablecimiento">
+    update came.supervisor_establecimiento
+    set id_asignacion_tipo = #{id_asignacion_tipo,jdbcType=BIGINT},
+      id_supervisor = #{id_supervisor,jdbcType=BIGINT},
+      id_red = #{id_red,jdbcType=BIGINT},
+      id_establecimiento = #{id_establecimiento,jdbcType=BIGINT}
+    where id_supervisor_establecimiento = #{id_supervisor_establecimiento,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 'false' as QUERYID,id_supervisor_establecimiento, id_asignacion_tipo, id_supervisor, 
+    id_red, id_establecimiento
+    from came.supervisor_establecimiento
+    where id_supervisor_establecimiento = #{id_supervisor_establecimiento,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id_supervisor_establecimiento, id_asignacion_tipo, id_supervisor, id_red, 
+    id_establecimiento
+    from came.supervisor_establecimiento
+  </select>
+</mapper>

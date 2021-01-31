@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.SesionFocoMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.SesionFoco">
+		<id column="id_sesion_foco" property="idSesionFoco" />
+		<result column="id_sesion" property="idSesion" />
+		<result column="id_foco" property="idFoco" />
+		<result column="start_date" property="startDate" />
+		<result column="end_date" property="endDate" />
+		<result column="usuario_registro" property="usuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+
+		<collection property="movimientosClaves"
+			column="id_sesion_foco"
+			notNullColumn="id_sesion_foco"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.SesionMovimientosClavesMapper.getByIdSesionFoco"
+			foreignColumn="id_sesion_foco"></collection>
+
+		<collection property="accionesMejora"
+			column="id_sesion_foco"
+			notNullColumn="id_sesion_foco"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.SesionFocoAccionMejoraMapper.getByIdSesionFoco"
+			foreignColumn="id_sesion_foco"></collection>
+
+	</resultMap>
+
+	<sql id="query">
+		select _sf.id_sesion_foco, 
+			   _sf.id_sesion, 
+			   _sf.id_foco, 
+			   _sf.start_date, 
+			   _sf.end_date, 
+			   _sf.usuario_registro, 
+			   _sf.fecha_registro
+		from came.came_sesion_foco _sf
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_sesion_foco
+		where id_sesion_foco = #{idSesionFoco}
+	</delete>
+
+	<insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SesionFoco">
+		<selectKey keyColumn="id_sesion_foco"
+			keyProperty="idSesionFoco" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_sesion_foco (
+			id_sesion_foco, id_sesion, id_foco, start_date, end_date, usuario_registro, fecha_registro
+		)
+		values (
+			#{idSesionFoco}, 
+			#{idSesion},
+			#{idFoco},
+			#{startDate}, 
+			#{endDate}, 
+			#{usuarioRegistro}, 
+			#{fechaRegistro}
+		)
+	</insert>
+
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SesionFoco">
+		update came.came_sesion_foco
+		set 
+			id_sesion=#{idSesion}, 
+			id_foco=#{idFoco}, 
+			start_date=#{startDate}, 
+			end_date=#{endDate}, 
+			usuario_registro=#{usuarioRegistro}, 
+			fecha_registro=#{fecha_registro}		
+		where id_sesion_foco = #{idSesionFoco}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long"	resultMap="BaseResultMap">
+		<include refid="query"></include>		
+		where _sf.id_sesion_foco = #{idSesionFoco}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>	
+		order by _sf.id_sesion_foco asc
+	</select>
+
+	<select id="getByIdSesion" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		<include refid="query"></include>		
+		where _sf.id_sesion = #{idSesion}
+	</select>
+</mapper>

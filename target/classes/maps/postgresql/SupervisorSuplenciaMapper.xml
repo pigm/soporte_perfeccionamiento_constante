@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.SupervisorSuplenciaMapper">
+  <resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.SupervisorSuplencia">
+    <id column="id_supervisor_suplencia" property="idSupervisorSuplencia" />
+    <result column="id_supervisor_ausente" property="idSupervisorAusente" />
+    <result column="id_supervisor_suplente" property="idSupervisorSuplente" />
+    <result column="start_date" property="startDate" />
+    <result column="end_date" property="endDate" />
+    <result column="id_usuario_registro" property="idUsuarioRegistro" />
+    <result column="fecha_registro" property="fechaRegistro" />
+    <result column="status" property="status" />
+    <result column="id_periodo" property="idPeriodo" />
+
+    <association property="supervisorAusente" 
+				column="id_supervisor_ausente"  
+				notNullColumn="id_supervisor_ausente"
+				select="cl.mineduc.came.apoyo_mejora_continua.mappers.SupervisorMapper.getById"
+				foreignColumn="id_supervisor_ausente"
+				/>
+
+     <association property="supervisorSuplente" 
+				column="id_supervisor_suplente"  
+				notNullColumn="id_supervisor_suplente"
+				select="cl.mineduc.came.apoyo_mejora_continua.mappers.SupervisorMapper.getById"
+				foreignColumn="id_supervisor_suplente"
+				/>
+
+  </resultMap>
+  
+  <sql id="query">
+    SELECT _ss.id_supervisor_suplencia, 
+           _ss.id_supervisor_ausente, 
+           _ss.id_supervisor_suplente, 
+           _ss.start_date, 
+           _ss.end_date, 
+           _ss.fecha_registro, 
+           _ss.id_usuario_registro,
+           _ss.status,
+           _ss.id_periodo
+	FROM came.came_supervisor_suplencia _ss
+  </sql>
+  
+  <delete id="deleteById" parameterType="java.lang.Long">
+    DELETE FROM came.came_supervisor_suplencia
+    where id_supervisor_suplencia = #{idSupervisorSuplencia,jdbcType=BIGINT}
+  </delete>
+    
+  <insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SupervisorSuplencia">
+    <selectKey keyColumn="id_supervisor_suplencia" 
+               keyProperty="idSupervisorSuplencia"
+			   order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+	</selectKey>
+   INSERT INTO came.came_supervisor_suplencia(
+	id_supervisor_suplencia, id_supervisor_ausente, id_supervisor_suplente, start_date, end_date, fecha_registro, id_usuario_registro, status, id_periodo)
+	VALUES (#{idSupervisorSuplencia,jdbcType=BIGINT},
+            #{idSupervisorAusente},
+            #{idSupervisorSuplente},
+            #{startDate},
+            #{endDate},
+            #{fechaRegistro,jdbcType=TIMESTAMP},
+            #{idUsuarioRegistro,jdbcType=BIGINT},
+            #{status},
+            #{idPeriodo});    
+  </insert>
+    
+    <update id="updateById" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.SupervisorSuplencia">
+        update came.came_supervisor_suplencia
+            set id_supervisor_ausente=#{idSupervisorAusente},
+                id_supervisor_suplente=#{idSupervisorSuplente}, 
+                start_date=#{startDate}, 
+                end_date=#{endDate}, 
+                fecha_registro=#{fechaRegistro}, 
+                id_usuario_registro=#{idUsuarioRegistro},
+                status=#{status},
+                id_periodo=#{idPeriodo}
+        where id_supervisor_suplencia = #{idSupervisorSuplencia,jdbcType=BIGINT}
+    </update>
+
+  <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+   	    <include refid="query"></include>
+        where _ss.id_supervisor_suplencia = #{idSupervisorSuplencia,jdbcType=BIGINT}
+  </select>
+
+  <select id="getAll" resultMap="BaseResultMap">
+    <include refid="query"></include>
+	  order by _ss.id_supervisor_suplencia asc
+  </select>
+
+  <select id="getByIdPeriodo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+   	    <include refid="query"></include>
+        where _ss.id_periodo = #{idPeriodo}
+  </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.CategorizacionMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.Categorizacion">
+		<id column="id_categorizacion"	property="idCategorizacion" />
+	</resultMap>
+	
+	<sql id="query">
+		select id_categorizacion
+		from came.came_categorizacion _c
+	</sql>	
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_categorizacion
+		where id_categorizacion = #{idCategorizacion,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Categorizacion">
+		insert into came.came_categorizacion (id_categorizacion)
+		values (#{cat.idCategorizacion,jdbcType=BIGINT})
+	</insert>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _c.id_categorizacion asc
+	</select>
+</mapper>

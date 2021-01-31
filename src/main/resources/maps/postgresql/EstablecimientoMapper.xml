@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EstablecimientoMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.Establecimiento">
+		<id column="id_establecimiento" property="idEstablecimiento" />
+		<result column="id_categorizacion1" property="idCategorizacion1" />
+		<result column="id_departamento_provincial" property="idDepartamento_provincial" />
+		<result column="id_comuna" property="idComuna" />
+		<result column="id_establecimiento_estado" property="idEstablecimientoEstado" />
+		<result column="id_director" property="idDirector" />
+		<result column="id_categorizacion2"	property="idCategorizacion2" />
+		<result column="id_clasificacion_sep" property="idClasificacion_sep" />
+		<result column="id_sostenedor" property="idSostenedor" />
+	</resultMap>
+	
+	<sql id="query">
+		select _est.id_establecimiento, 
+			   _est.id_categorizacion1, 
+			   _est.id_departamento_provincial,
+			   _est.id_comuna,
+			   _est.id_establecimiento_estado, 
+			   _est.id_director, 
+			   _est.id_categorizacion2, 
+			   _est.id_clasificacion_sep,
+			   _est.id_sostenedor
+		from came.came_establecimiento _est
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_establecimiento
+		where id_establecimiento = #{idEstablecimiento,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Establecimiento">
+		insert into came.came_establecimiento 
+					(id_establecimiento,
+					 id_categorizacion1,
+					 id_departamento_provincial, 
+					 id_comuna, 
+					 id_establecimiento_estado,
+					 id_director, 
+					 id_categorizacion2, 
+					 id_clasificacion_sep,
+					 id_sostenedor)
+		values (#{est.idEstablecimiento,jdbcType=BIGINT},
+				#{est.idCategorizacion1,jdbcType=BIGINT},
+				#{est.idDepartamento_provincial,jdbcType=BIGINT},
+				#{est.idComuna,jdbcType=BIGINT},
+				#{est.idEstablecimiento_estado,jdbcType=BIGINT},
+				#{est.idDirector,jdbcType=BIGINT}, 
+				#{est.idCategorizacion2,jdbcType=BIGINT},
+				#{est.idClasificacion_sep,jdbcType=BIGINT},
+				#{est.idSostenedor,jdbcType=BIGINT})
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Establecimiento">
+		update came.came_establecimiento
+			set id_categorizacion1 = #{est.id_categorizacion1,jdbcType=BIGINT},
+				id_departamento_provincial = #{est.id_departamento_provincial,jdbcType=BIGINT},
+				id_comuna = #{est.id_comuna,jdbcType=BIGINT},
+				id_establecimiento_estado = #{est.id_establecimiento_estado,jdbcType=BIGINT},
+				id_director = #{est.id_director,jdbcType=BIGINT},
+				id_categorizacion2 = #{est.id_categorizacion2,jdbcType=BIGINT},
+				id_clasificacion_sep = #{est.id_clasificacion_sep,jdbcType=BIGINT},
+				id_sostenedor = #{est.id_sostenedor,jdbcType=BIGINT}
+		where id_establecimiento = #{est.id_establecimiento,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _est.id_establecimiento = #{idEstablecimiento,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _est.id_establecimiento asc
+	</select>
+</mapper>

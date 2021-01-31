@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EncuestaMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Encuesta">
+		<id column="id_encuesta" property="idEncuesta" />		
+		<result column="id_periodo" property="idPeriodo" />
+		<result column="nombre" property="nombre" />
+		<result column="fecha_inicio" property="fechaInicio" />
+		<result column="fecha_fin" property="fechaFin" />
+		<result column="permite_comentarios" property="permiteComentarios" />
+		<result column="estado" property="estado" />
+		<result column="id_usuario_creacion" property="idUsuarioCreacion" />
+		<result column="fecha_creacion" property="fechaCreacion" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+	</resultMap>
+
+	<sql id="query">
+		select 
+			_e.id_encuesta, 
+			_e.id_periodo, 
+			_e.nombre, 
+			_e.fecha_inicio, 
+			_e.fecha_fin, 
+			_e.permite_comentarios, 
+			_e.estado, 
+			_e.id_usuario_creacion, 
+			_e.fecha_creacion, 
+			_e.id_usuario_registro, 
+			_e.fecha_registro
+		from came.came_encuesta _e
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+			came.came_encuesta
+		where id_encuesta =	#{idEncuesta}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Encuesta">
+		<selectKey keyColumn="id_encuesta"
+			keyProperty="idEncuesta" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_encuesta
+		(
+			id_encuesta, 
+			id_periodo, 
+			nombre, 
+			fecha_inicio, 
+			fecha_fin, 
+			permite_comentarios, 
+			estado, 
+			id_usuario_creacion, 
+			fecha_creacion, 
+			id_usuario_registro, 
+			fecha_registro	
+		)
+		values
+		(
+			#{idEncuesta},
+			#{idPeriodo}, 
+			#{nombre}, 
+			#{fechaInicio}, 
+			#{fechaFin}, 
+			#{permiteComentarios}, 
+			#{estado}, 
+			#{idUsuarioCreacion}, 
+			#{fechaCreacion}, 
+			#{idUsuarioRegistro}, 
+			#{fechaRegistro}		
+		)
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Encuesta">
+		update came.came_encuesta
+		set id_periodo=#{idPeriodo}, 
+			nombre=#{nombre}, 
+			fecha_inicio=#{fechaInicio}, 
+			fecha_fin=#{fechaFin}, 
+			permite_comentarios=#{permiteComentarios}, 
+			estado=#{estado}, 
+			id_usuario_creacion=#{idUsuarioCreacion}, 
+			fecha_creacion=#{fechaCreacion}, 
+			id_usuario_registro=#{idUsuarioRegistro}, 
+			fecha_registro=#{fechaRegistro}
+		where
+		id_encuesta = #{idEncuesta}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _e.id_encuesta =	#{idEncuesta}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _e.id_encuesta asc
+	</select>	
+
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _e.id_periodo = #{idPeriodo}
+	</select>
+
+</mapper>

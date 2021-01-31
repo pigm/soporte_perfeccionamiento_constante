@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.RedMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.Red">
+		<id column="id_red" jdbcType="BIGINT" property="idRed" />
+		<result column="id_tipo_red" property="idTipoRed" />
+		<result column="nombre" property="nombre" />
+		<result column="id_periodo" property="idPeriodo" />
+		<result column="id_usuario" property="idUsuario" />
+		<result column="id_region" property="idRegion" />
+		<result column="id_deprov" property="idDeprov" />
+		<result column="id_comuna" property="idComuna" />
+		<result column="fecha_creacion" property="fechaCreacion" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+
+		<collection property="establecimientos"
+			column="id_red"
+			notNullColumn="id_red"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.RedEstablecimientoMapper.getByIdRed"
+			foreignColumn="id_red"></collection>
+
+		<collection property="sostenedores"
+			column="id_red"
+			notNullColumn="id_red"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.RedSostenedorMapper.getByIdRed"
+			foreignColumn="id_red"></collection>
+
+		<collection property="supervisores"
+			column="id_red"
+			notNullColumn="id_red"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.RedSupervisorMapper.getByIdRed"
+			foreignColumn="id_red"></collection>
+
+	</resultMap>
+	
+	<sql id="red">
+		SELECT 
+			_r.id_red, 
+			_r.id_tipo_red, 
+			_r.nombre, 
+			_r.id_periodo, 
+			_r.id_usuario, 
+			_r.id_region, 
+			_r.id_deprov, 
+			_r.id_comuna, 
+			_r.fecha_creacion, 
+			_r.fecha_registro, 
+			_r.id_usuario_registro
+		FROM
+			came.came_red _r
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_red
+		where id_red = #{idRed,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Red">
+		<selectKey keyColumn="id_red" keyProperty="idRed"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_red (id_red, id_tipo_red, nombre, id_periodo, id_usuario, id_region, id_deprov, id_comuna, fecha_creacion, fecha_registro, id_usuario_registro)
+		values (
+				#{idRed}, 
+				#{idTipoRed},
+				#{nombre},
+				#{idPeriodo},
+				#{idUsuario},
+				#{idRegion},
+				#{idDeprov},
+				#{idComuna},
+				#{fechaCreacion},
+				#{fechaRegistro},
+				#{idUsuarioRegistro}
+				)
+	</insert>
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Red">
+		update came.came_red
+		set 			
+			id_tipo_red=#{idTipoRed}, 
+			nombre=#{nombre}, 
+			id_periodo=#{idPeriodo}, 
+			id_usuario=#{idUsuario}, 
+			id_region=#{idRegion}, 
+			id_deprov=#{idDeprov}, 
+			id_comuna=#{idComuna}, 
+			fecha_creacion=#{fechaCreacion}, 
+			fecha_registro=#{fechaRegistro}, 
+			id_usuario_registro=#{idUsuarioRegistro}
+		where id_red = #{idRed,jdbcType=BIGINT}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="red"></include>
+		where _r.id_red = #{idRed,jdbcType=BIGINT}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="red"></include>
+		order by _r.id_red desc
+	</select>
+	
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="red"></include>
+		where _r.id_periodo = #{idPeriodo,jdbcType=BIGINT}
+	</select>
+	
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.AsesoriaDirectaMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.AsesoriaDirecta">
+		<id column="id_asesoria_directa" property="idAsesoriaDirecta" />
+		<result column="id_supervisor"	property="idSupervisor" />
+		<result column="rbd"	property="rbd" />
+		<result column="nombre"	property="nombre" />
+		<result column="id_region"	property="idRegion" />
+		<result column="id_deprov"	property="idDeprov" />
+		<result column="id_comuna"	property="idComuna" />
+		<result column="fecha_creacion"	property="fechaCreacion" />
+		<result column="fecha_registro"	property="fechaRegistro" />
+		<result column="id_usuario_registro"	property="idUsuarioRegistro" />
+		<result column="id_periodo"	property="idPeriodo" />
+		<result column="id_asignacion_supervisor"	property="idAsignacionSupervisor" />	
+		<result column="habilitado"	property="habilitado" />		
+	</resultMap>
+	
+	<sql id="query">
+		SELECT _ad.id_asesoria_directa, 
+			   _ad.id_supervisor, 
+			   _ad.rbd, 
+			   _ad.nombre,
+			   _ad.id_region, 
+			   _ad.id_deprov, 
+			   _ad.id_comuna, 
+			   _ad.fecha_creacion, 
+			   _ad.fecha_registro, 
+			   _ad.id_usuario_registro, 
+			   _ad.id_periodo, 
+			   _ad.id_asignacion_supervisor,
+			   _ad.habilitado
+		FROM came.came_asesoria_directa _ad
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		DELETE FROM came.came_asesoria_directa
+		where id_asesoria_directa = #{idAsesoriaDirecta}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.AsesoriaDirecta">
+		<selectKey keyColumn="id_asesoria_directa"
+			keyProperty="idAsesoriaDirecta" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		INSERT INTO came.came_asesoria_directa(
+				id_asesoria_directa, 
+				id_supervisor, 
+				rbd, 
+				nombre,
+				id_region, 
+				id_deprov, 
+				id_comuna, 
+				fecha_creacion, 
+				fecha_registro, 
+				id_usuario_registro, 
+				id_periodo, 
+				id_asignacion_supervisor,
+				habilitado)
+		VALUES (
+				#{idAsesoriaDirecta}, 
+				#{idSupervisor}, 
+				#{rbd}, 
+				#{nombre},
+				#{idRegion}, 
+				#{idDeprov}, 
+				#{idComuna}, 
+				#{fechaCreacion}, 
+				#{fechaRegistro}, 
+				#{idUsuarioRegistro}, 
+				#{idPeriodo}, 
+				#{idAsignacionSupervisor},
+				#{habilitado});
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.AsesoriaDirecta">
+		update came.came_asesoria_directa
+		set id_supervisor=#{idSupervisor}, 
+			rbd=#{rbd},
+			nombre=#{nombre}, 
+			id_region=#{idRegion}, 
+			id_deprov=#{idDeprov}, 
+			id_comuna=#{idComuna}, 
+			fecha_creacion=#{fechaCreacion}, 
+			fecha_registro=now(), 
+			id_usuario_registro=#{idUsuarioRegistro}, 
+			id_periodo=#{idPeriodo}, 
+			id_asignacion_supervisor=#{idAsignacionSupervisor},
+			habilitado=#{habilitado}
+		where id_asesoria_directa = #{idAsesoriaDirecta}
+	</update>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ad.id_asesoria_directa = #{idAsesoriaDirecta}
+	</select>
+	
+	<select id="getByIdAsignacionSupervisor" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ad.id_asignacion_supervisor = #{idAsignacionSupervisor}
+	</select>
+	
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _ad.id_asesoria_directa asc
+	</select>
+
+	<select id="getByIdPeriodo" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _ad.id_periodo = #{idPeriodo}
+	</select>
+</mapper>

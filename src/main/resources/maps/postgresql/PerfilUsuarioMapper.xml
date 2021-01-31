@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.PerfilUsuarioMapper">
+	
+	<resultMap id="resultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.PerfilUsuario">
+		<id property="id" column="id_usuario_perfil"/>
+		<result property="idUsuario" column="id_usuario"/>
+		<result property="status" column="status"/>
+		<result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+		<result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+		<collection property="perfiles" 
+				column="id_perfil"  
+				notNullColumn="id_perfil"
+				select="cl.mineduc.came.apoyo_mejora_continua.mappers.PerfilMapper.getById"
+				foreignColumn="id_perfil"
+				/>
+	</resultMap>
+
+	<sql id="sqlUsuarioPerfil">
+		SELECT 
+			_up.id_usuario_perfil,
+			_up.id_usuario,
+			_up.id_perfil, 
+			_up.start_date,
+			_up.end_date,
+			_up.status
+		FROM
+			came.came_usuario_perfil _up
+	</sql>
+	
+	
+	
+	<select id="getPerfilUsuarioPorIdUsuario" resultMap="resultMap"
+		parameterType="java.lang.Long">
+		<include refid="sqlUsuarioPerfil"></include>
+		WHERE _up.id_usuario = #{id_usuario}
+	</select>
+	
+	<select id="getPerfilUsuarioPorIdPerfil" resultMap="resultMap"
+		parameterType="java.lang.Long">
+		<include refid="sqlUsuarioPerfil"></include>
+		WHERE _up.id_perfil = #{id_perfil}
+	</select>
+	
+	<insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PerfilUsuario">
+		<selectKey keyColumn="id_usuario_perfil" keyProperty="id"
+				order="BEFORE" resultType="java.lang.Long">
+				(select came.next_id())
+			</selectKey>
+			INSERT INTO came.came_usuario_perfil (
+			id_usuario_perfil,
+			id_usuario,
+			id_perfil,
+			start_date,
+			end_date,
+			status
+			) VALUES (
+				#{perfilUsuario.id},
+				#{perfilUsuario.idUsuario},
+				#{perfilUsuario.startDate},
+				#{perfilUsuario.endDate},
+				#{perfilUsuario.status},
+			)
+			
+	</insert>
+	
+		
+</mapper>
+

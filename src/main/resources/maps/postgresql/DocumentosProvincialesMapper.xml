@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.DocumentosProvincialesMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.DocumentosProvinciales">
+		<id column="id_documentos_provinciales" property="idDocumentosProvinciales" />
+		<result column="id_periodo" property="idPeriodo" />		
+		<result column="id_periodo_documentos_provinciales" property="idPeriodoDocumentosProvinciales" />	
+		<result column="fecha_registro" property="fechaRegistro" />	
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />	
+		<result column="file_path" property="filePath" />	
+		<result column="file_name" property="fileName" />
+		<result column="id_region" property="idRegion" />	
+		<result column="id_deprov" property="idDeprov" />	
+		<result column="type_document" property="typeDocument" />
+		<result column="has_downloaded" property="hasDownloaded" />
+	</resultMap>
+	
+	<sql id="query">
+		SELECT _dp.id_documentos_provinciales, 
+			   _dp.id_periodo, 
+			   _dp.id_periodo_documentos_provinciales, 
+			   _dp.fecha_registro, 
+			   _dp.id_usuario_registro, 
+			   _dp.file_path, 
+			   _dp.file_name,
+			   _dp.id_region, 
+			   _dp.id_deprov,
+			   _dp.type_document,
+			   _dp.has_downloaded
+		FROM came.came_documentos_provinciales _dp
+	</sql>	
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_documentos_provinciales
+		where id_documentos_provinciales = #{idDocumentosProvinciales,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insert"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.DocumentosProvinciales">
+		<selectKey keyColumn="id_documentos_provinciales" keyProperty="idDocumentosProvinciales" order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_documentos_provinciales 
+		(
+			id_documentos_provinciales, 
+			id_periodo, 
+			id_periodo_documentos_provinciales, 
+			fecha_registro, 
+			id_usuario_registro, 
+			file_path, 
+			file_name,
+			id_region,
+			id_deprov,
+			type_document,
+			has_downloaded
+		)
+		values (
+			#{idDocumentosProvinciales ,jdbcType=BIGINT},
+			#{idPeriodo},
+			#{idPeriodoDocumentosProvinciales},
+			#{fechaRegistro},
+			#{idUsuarioRegistro},
+			#{filePath},
+			#{fileName},
+			#{idRegion},
+			#{idDeprov},
+			#{typeDocument},
+			#{hasDownloaded}
+		)
+	</insert>
+	
+	<update id="setHasDownloaded" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.DocumentosProvinciales">
+		update came.came_documentos_provinciales		
+		set has_downloaded = #{hasDownloaded}
+		where id_documentos_provinciales = #{idDocumentosProvinciales,jdbcType=BIGINT}
+	</update>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _dp.id_documentos_provinciales asc
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _dp.id_documentos_provinciales = #{idDocumentosProvinciales,jdbcType=BIGINT}
+	</select>
+
+	<select id="getByPeriod" parameterType="java.lang.Long"	resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _dp.id_periodo = #{idPeriodo,jdbcType=BIGINT}
+	</select>
+</mapper>

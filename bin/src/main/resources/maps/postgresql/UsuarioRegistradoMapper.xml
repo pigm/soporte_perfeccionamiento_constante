@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.UsuarioRegistradoMapper">
+	
+	<resultMap id="userResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.UsuarioRegistrado">
+		<id property="idUsuario" column="id_usuario"/>
+		<result property="idEstado" column="id_estado"/>
+		<result property="idRegion" column="id_region"/>
+		<result property="idDeprov" column="id_deprov"/>
+		<result property="usuarioDominio" column="usuario_dominio"/>
+		<result property="nombre" column="nombre"/>
+		<result property="rut" column="run"/>
+		<result property="paterno" column="apellido_paterno"/>
+		<result property="materno" column="apellido_materno"/>
+		<result property="email" column="email"/>
+		<result property="habilitado" column="habilitado"/>
+		<result property="ultimaModificacion" column="ultima_modificacion"/>
+		<result property="idUsuarioModificado" column="id_usuario_modificacion"/>
+		<result property="dv" column="dv"/>
+		<result property="fechaRegistro" column="fecha_registro"/>
+		<association property="estado" 
+				column="id_estado"  
+				notNullColumn="id_estado"
+				select="cl.mineduc.came.apoyo_mejora_continua.mappers.EstadoMapper.getById"
+				foreignColumn="id_estado"
+				/>
+		<collection property="perfilesUsuarios"
+			column="id_usuario"
+			notNullColumn="id_usuario"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.UsuarioPerfilMapper.getByIdUsuario"
+			foreignColumn="id_usuario"></collection>
+	</resultMap>
+
+	<sql id="usuario">
+		SELECT 
+			_u.id_usuario,
+			_u.id_estado,
+			_u.id_region,
+			_u.id_deprov,
+			_u.usuario_dominio,
+			_u.nombre,
+			_u.run,
+			_u.apellido_paterno,
+			_u.apellido_materno,
+			_u.email,
+			_u.habilitado,
+			_u.ultima_modificacion,
+			_u.id_usuario_modificacion,
+			_u.dv,
+			_u.fecha_registro
+		FROM
+			came.came_usuario _u
+	</sql>
+	
+	<select id="getAll" resultType="cl.mineduc.came.apoyo_mejora_continua.modelo.UsuarioRegistrado" resultMap="userResultMap">
+		<include refid="usuario"/>
+		order by _u.id_usuario asc
+	</select>
+	
+	<select id="getUsuarioById" resultMap="userResultMap"
+		parameterType="java.lang.Long">
+		<include refid="usuario"></include>
+		WHERE _u.id_usuario = #{id}
+	</select>
+	
+	<select id="getUsuarioByUsername" resultMap="userResultMap"
+		parameterType="String">
+		<include refid="usuario"></include>
+		WHERE _u.usuario_dominio = #{username}
+	</select>
+	
+
+	<insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.UsuarioRegistrado">
+		<selectKey keyColumn="id_usuario" keyProperty="idUsuario"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		INSERT INTO came.came_usuario (
+		id_usuario,
+		id_estado,
+		id_region,
+		id_deprov,
+		usuario_dominio,
+		nombre,
+		run,
+		apellido_paterno,
+		apellido_materno,
+		email,
+		habilitado, 
+		ultima_modificacion,
+		id_usuario_modificacion,
+		dv,
+		fecha_registro
+		) 
+		VALUES (
+			#{idUsuario},
+			#{idEstado},
+			#{idRegion},
+			#{idDeprov},
+			#{usuarioDominio},
+			#{nombre},
+			#{rut},
+			#{paterno},
+			#{materno},
+			#{email},
+			#{habilitado},
+			#{ultimaModificacion},
+			#{idUsuarioModificado},
+			#{dv},
+			now()
+		 );
+	</insert>
+	
+	<update id="update">
+	UPDATE came.came_usuario
+		SET id_estado=#{idEstado}, 
+			id_region=#{idRegion},
+			id_deprov=#{idDeprov}, 
+			usuario_dominio=#{usuarioDominio},
+			run=#{rut}, 
+			nombre=#{nombre}, 
+			apellido_paterno=#{paterno},
+			apellido_materno=#{materno}, 
+			email=#{email},
+			habilitado=#{habilitado}, 
+			ultima_modificacion=#{ultimaModificacion}, 
+			id_usuario_modificacion=#{idUsuarioModificado}, 
+			dv=#{dv},
+			fecha_registro=#{fechaRegistro}
+	WHERE id_usuario=#{idUsuario};
+		
+	</update>
+	
+</mapper>
+

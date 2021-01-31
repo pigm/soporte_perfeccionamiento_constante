@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.ModuloMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.Modulo">
+		<id column="id_modulo" property="idModulo" />
+		<result column="id_estado"	property="idEstado" />
+		<result column="nombre" property="nombre" />
+		<result column="status" property="status" />
+		<result column="index" property="index" />
+		<collection property="subModulo"
+			column="id_modulo"
+			notNullColumn="id_modulo"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.SubModuloMapper.getByIdModulo"
+			foreignColumn="id_modulo"></collection>
+	</resultMap>
+	
+	<sql id="query">
+		select _m.id_modulo,
+			   _m.id_estado, 
+			   _m.nombre, 
+			   _m.status,
+			   _m.index
+		from came.came_modulo _m
+	</sql>		
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.modulo
+		where id_modulo = #{idModuloodulo,jdbcType=BIGINT}
+	</delete>
+	
+	<insert id="insert" parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Modulo">
+		<selectKey keyColumn="id_modulo" keyProperty="idModulo"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		INSERT INTO came.came_modulo (
+						id_modulo,
+						id_estado,
+						nombre,						
+						status
+						) 
+						VALUES (
+							#{idModulo},
+							#{idEstado},
+							#{nombre},
+							#{status}
+						 );
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.Modulo">
+		update came.came_modulo
+			set id_estado = #{idEstado,jdbcType=BIGINT},
+				nombre = #{nombre,jdbcType=VARCHAR},
+				status = #{status,jdbcType=BIT}
+		where id_modulo = #{idModulo,jdbcType=BIGINT}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where id_modulo = #{idModulo,jdbcType=BIGINT}
+	</select>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _m.index asc
+	</select>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.EncuestaObservacionMapper">
+	<resultMap id="BaseResultMap" type="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaObservacion">
+		<id column="id_encuesta_observacion" property="idEncuestaObservacion" />
+		<result column="id_encuesta" property="idEncuesta" />
+		<result column="id_usuario" property="idUsuario" />
+		<result column="id_perfil" property="idPerfil" />
+		<result column="observacion" property="observacion" />
+		<result column="fecha_observacion" property="fechaObservacion" />		
+	</resultMap>
+
+	<sql id="query">
+		select 
+			_eo.id_encuesta_observacion, 
+			_eo.id_encuesta, 
+			_eo.id_usuario, 
+			_eo.id_perfil, 
+			_eo.observacion, 
+			_eo.fecha_observacion
+		from came.came_encuesta_observacion _eo
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+			came.came_encuesta_observacion
+		where id_encuesta_observacion =	#{idEncuestaObservacion}
+	</delete>
+	
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaObservacion">
+		<selectKey keyColumn="id_encuesta_observacion"
+			keyProperty="idEncuestaObservacion" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_encuesta_observacion
+		(
+			id_encuesta_observacion, 
+			id_encuesta, 
+			id_usuario, 
+			id_perfil, 
+			observacion, 
+			fecha_observacion
+		)
+		values
+		(
+			#{idEncuestaObservacion},
+			#{idEncuesta}, 
+			#{idUsuario}, 
+			#{idPerfil}, 
+			#{observacion}, 
+			#{fechaObservacion}	
+		)
+	</insert>
+	
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.EncuestaObservacion">
+		update came.came_encuesta_observacion
+		set id_encuesta=#{idEncuesta}, 
+			id_usuario=#{idUsuario}, 
+			id_perfil=#{idPerfil}, 
+			observacion=#{observacion}, 
+			fecha_observacion=#{fechaObservacion}
+		where
+			id_encuesta_observacion = #{idEncuestaObservacion}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _eo.id_encuesta_observacion =	#{idEncuestaObservacion}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="query"></include>
+		order by _eo.id_encuesta_observacion asc
+	</select>	
+
+	<select id="getByIdEncuesta" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="query"></include>
+		where _eo.id_encuesta =	#{idEncuesta}
+	</select>
+
+</mapper>

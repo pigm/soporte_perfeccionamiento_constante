@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.AccionesMejorasMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.AccionesMejoras">
+		<id column="id_acciones_mejoras" property="idAccionesMejoras" />
+		<result column="id_foco" property="idFoco" />
+		<result column="nombre" property="nombre" />
+		<result column="descripcion" property="descripcion" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="ultima_modificacion"
+			property="ultimaModificacion" />
+		<result column="id_usuario_modificacion"
+			property="idUsuarioModificacion" />
+		<collection property="movimientos" column="id_acciones_mejoras"
+			notNullColumn="id_acciones_mejoras"
+			select="cl.mineduc.came.apoyo_mejora_continua.mappers.MovimientosClavesMapper.getByIdAcciones"
+			foreignColumn="id_acciones_mejoras" />
+	</resultMap>
+
+	<sql id="modulo">
+		SELECT
+		_am.id_acciones_mejoras,
+		_am.id_foco,
+		_am.nombre,
+		_am.descripcion,
+		_am.fecha_registro,
+		_am.ultima_modificacion,
+		_am.id_usuario_modificacion
+		FROM
+		came.came_acciones_mejoras _am
+	</sql>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from
+		came.came_acciones_mejoras
+		where id_acciones_mejoras =
+		#{idAccionesMejoras,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.AccionesMejoras">
+		<selectKey keyColumn="id_acciones_mejoras"
+			keyProperty="idAccionesMejoras" order="BEFORE"
+			resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_acciones_mejoras (id_acciones_mejoras,
+		id_foco,
+		nombre,
+		descripcion,
+		fecha_registro,
+		ultima_modificacion,
+		id_usuario_modificacion)
+		values (#{idAccionesMejoras, jdbcType=BIGINT},
+		#{idFoco, jdbcType=BIGINT},
+		#{nombre},
+		#{descripcion},
+		now(),
+		now(),
+		#{idUsuarioModificacion})
+	</insert>
+
+	<update id="updateById"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.AccionesMejoras">
+		update came.came_acciones_mejoras
+		set id_foco =
+		#{idFoco},
+		nombre = #{nombre},
+		descripcion = #{descripcion},
+		ultima_modificacion = now(),
+		id_usuario_modificacion =
+		#{idUsuarioModificacion}
+		where id_acciones_mejoras =
+		#{idAccionesMejoras,jdbcType=BIGINT}
+	</update>
+
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="modulo"></include>
+		where id_acciones_mejoras = #{idAccionesMejoras, jdbcType=BIGINT}
+	</select>
+
+	<select id="getByName" resultMap="BaseResultMap">
+		<include refid="modulo"></include>
+		where _am.nombre = #{nombre}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="modulo"></include>
+		order by _am.id_acciones_mejoras asc
+	</select>
+
+	<select id="getByIdFoco" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="modulo"></include>
+		where id_foco = #{idFoco}
+	</select>
+</mapper>

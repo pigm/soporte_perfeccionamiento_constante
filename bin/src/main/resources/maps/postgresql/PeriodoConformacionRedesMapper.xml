@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="cl.mineduc.came.apoyo_mejora_continua.mappers.PeriodoConformacionRedesMapper">
+	<resultMap id="BaseResultMap"
+		type="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoConformacionRedes">
+		<id column="id_periodo_conformacion_redes" jdbcType="BIGINT" property="idPeriodoConformacionRedes" />
+		<result column="id_periodo" jdbcType="BIGINT" property="idPeriodo" />	
+		<result column="id_region" jdbcType="BIGINT" property="idRegion" />
+		<result column="id_deprov" jdbcType="BIGINT" property="idDeprov" />	
+		<result column="fecha_inicio" property="fechaInicio" />
+		<result column="fecha_fin" property="fechaFin" />		
+		<result column="id_usuario_registro" property="idUsuarioRegistro" />
+		<result column="fecha_registro" property="fechaRegistro" />
+		<result column="es_caso_especial" property="esCasoEspecial" />
+		<result column="descripcion" property="descripcion" />
+	</resultMap>
+	
+	<sql id="conformacion_redes">
+		SELECT 
+			_cr.id_periodo_conformacion_redes,
+			_cr.id_periodo,			
+			_cr.fecha_inicio,
+			_cr.fecha_fin,
+			_cr.id_usuario_registro,
+			_cr.fecha_registro,
+			_cr.es_caso_especial,
+			_cr.descripcion
+		FROM
+			came.came_periodo_conformacion_redes _cr
+	</sql>
+	
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from came.came_periodo_conformacion_redes
+		where id_periodo_conformacion_redes =
+		#{idPeriodoConformacionRedes,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert"
+		parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoConformacionRedes">
+		<selectKey keyColumn="id_periodo_conformacion_redes" keyProperty="idPeriodoConformacionRedes"
+			order="BEFORE" resultType="java.lang.Long">
+			(select came.next_id())
+		</selectKey>
+		insert into came.came_periodo_conformacion_redes
+			(
+				id_periodo_conformacion_redes, id_periodo,				
+				fecha_inicio,
+				fecha_fin,
+				id_usuario_registro,
+				fecha_registro,
+				es_caso_especial,
+				descripcion
+			)
+		values (
+			#{idPeriodoConformacionRedes,jdbcType=BIGINT},
+			#{idPeriodo,jdbcType=BIGINT},			
+			#{fechaInicio},
+			#{fechaFin},
+			#{idUsuarioRegistro},
+			now(),
+			#{esCasoEspecial},
+			#{descripcion}
+		)
+	</insert>
+	<update id="updateById"	parameterType="cl.mineduc.came.apoyo_mejora_continua.modelo.PeriodoConformacionRedes">
+		update came.came_periodo_conformacion_redes
+		set id_periodo = #{idPeriodo,jdbcType=BIGINT},
+			fecha_inicio = #{fechaInicio},
+			fecha_fin = #{fechaFin},
+			id_usuario_registro = #{idUsuarioRegistro},
+			fecha_registro = now(),
+			es_caso_espacial = #{esCasoEspecial},
+			descripcion = #{descripcion}
+		where id_periodo_conformacion_redes = #{idPeriodoConformacionRedes,jdbcType=BIGINT}
+	</update>
+	<select id="getById" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		<include refid="conformacion_redes"></include>
+		where _cr.id_periodo_conformacion_redes = #{idPeriodoConformacionRedes,jdbcType=BIGINT}
+	</select>
+	<select id="getAll" resultMap="BaseResultMap">
+		<include refid="conformacion_redes"></include>
+		order by _cr.id_periodo_conformacion_redes desc
+	</select>
+	
+	<select id="getByIdPeriodo" resultMap="BaseResultMap">
+		<include refid="conformacion_redes"></include>
+		where _cr.id_periodo = #{idPeriodo}
+		order by _cr.id_periodo_conformacion_redes desc
+	</select>
+</mapper>
